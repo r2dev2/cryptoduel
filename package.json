@@ -1,0 +1,29 @@
+{
+  "name": "svelte-app",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.0",
+    "eslint": "^7.32.0",
+    "nollup": "^0.13.13",
+    "rollup": "^2.3.4",
+    "rollup-plugin-hot": "^0.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte-hot": "^0.13.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.0.0"
+  },
+  "dependencies": {
+    "eslint-plugin-svelte3": "^3.2.0",
+    "sirv-cli": "^1.0.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev:rollup": "rollup -c -w",
+    "dev:livereload": "rollup -c -w --environment LIVERELOAD",
+    "dev:nollup": "nollup -c --hot --port 5000 --content-base ./public",
+    "dev": "npm run dev:nollup",
+    "start": "sirv public",
+    "format": "eslint --fix ."
+  }
+}
