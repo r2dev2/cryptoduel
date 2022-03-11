@@ -1,6 +1,6 @@
 <script>
   import { writable } from 'svelte/store';
-  import { onMount } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { alphabet, splitQuote } from './quotes.js';
   import Word from './Word.svelte';
 
@@ -8,6 +8,8 @@
 
   /** @type {EncryptedQuote | null} */
   export let problem = null;
+
+  const dispatch = createEventDispatcher();
 
   let replacement = Array(26).fill('');
 
@@ -18,17 +20,29 @@
     replacement = newReplacement;
   };
 
+  const isCorrect = (replacement, problem) => {
+    if (!problem) return false;
+    return [...problem.ciphertext].every((ch, i) => (
+      !alphabet.includes(ch) ||
+      problem.plaintext[i] === replacement[alphabet.indexOf(ch)]
+    ));
+  };
+
   onMount(() => {
     replacement = Array(26).fill('');
   });
 
   $: words = splitQuote(problem.ciphertext);
+  $: solved = isCorrect(replacement, problem);
+  $: if (solved) {
+    dispatch('solved');
+  }
 
   $: console.log('problem:', problem, 'replacement', replacement);
 </script>
 
 
-<div class="cryptogram">
+<div class="cryptogram" class:solved>
   {#each words as word}
     <Word
       {word}
@@ -41,7 +55,12 @@
 <style>
   .cryptogram {
     display: flex;
-    flex: row wrap;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 2rem;
+  }
+
+  .solved {
+    color: var(--solved-text-color);
   }
 </style>

@@ -20,7 +20,9 @@
   :root {
     --amber: #ffc107;
     --yellow: #ffeb3b;
+    --green: #4caf50;
     --hovered-letter-color: var(--yellow);
     --selected-letter-color: var(--amber);
+    --solved-text-color: var(--green);
   }
 </style>

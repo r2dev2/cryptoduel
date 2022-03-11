@@ -47,7 +47,6 @@
   .word {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     gap: 0;
   }
 
