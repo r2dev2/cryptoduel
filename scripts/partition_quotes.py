@@ -9,7 +9,7 @@ root = Path(__file__).parent / "../public/quotes"
 src = Path(__file__).parent / "../src"
 
 with open(root / "all.json", "r") as fin:
-    quotes = json.load(fin)
+    quotes = [quote for quote in json.load(fin) if len(quote["quoteText"]) >= 50]
 
 chunk_size = 500
 amount_chunks = 0
