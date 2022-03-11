@@ -1,5 +1,7 @@
 <script>
-  import { getQuoteGenerator } from './quotes.js';
+  import { getQuoteGenerator, toAristocratCipher } from './quotes.js';
+
+  import CryptogramSolver from './CryptogramSolver.svelte';
 
   const getNewQuote = getQuoteGenerator();
 
@@ -9,11 +11,16 @@
 <main>
   {#await quote}
     <p>Loading Quote</p>
-  {:then { author, text }}
-    <p>{author}</p>
-    <p>{text}</p>
+  {:then quote}
+    <CryptogramSolver problem={toAristocratCipher(quote)} />
   {/await}
 </main>
 
 <style>
+  :root {
+    --amber: #ffc107;
+    --yellow: #ffeb3b;
+    --hovered-letter-color: var(--yellow);
+    --selected-letter-color: var(--amber);
+  }
 </style>

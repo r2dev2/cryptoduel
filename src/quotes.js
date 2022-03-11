@@ -32,7 +32,7 @@ const generateRandomEncryption = () => {
 };
 
 /** @type {(quote: Quote) => EncryptedQuote} */
-const toAristocratCipher = quote => {
+export const toAristocratCipher = quote => {
   const plaintext = quote.text.toUpperCase();
   const encryptionAlphabet = generateRandomEncryption();
   const ciphertext = [...plaintext]
@@ -42,8 +42,8 @@ const toAristocratCipher = quote => {
   return { ...quote, plaintext, ciphertext };
 };
 
-/** @type {(text: string) => string} */
-const splitQuote = text => text.split(/\s+/g);
+/** @type {(text: string) => string[]} */
+export const splitQuote = text => [...text.split(/\s+/g)];
 
 /** @type {(text: string) => string} */
 const cleanUpText = text => text.replace(/[^\x00-\x7F]+/g, ''); // ascii-only
