@@ -11,6 +11,7 @@ import {
   users
 } from './store.js';
 import { hivemindBrain, isHivemindBrain, Messages } from './constants.js';
+import { log } from './utils.js';
 
 export const peer = new window.Peer();
 
@@ -26,7 +27,7 @@ export const peer = new window.Peer();
 
 /** @type {(otherId: string) => (data: PeerData) => void} */
 const onData = otherId => data => {
-  console.log('got data', data);
+  log('got data', data);
   if (dataResponders[data.type]) {
     dataResponders[data.type](otherId, data);
   }
@@ -106,11 +107,16 @@ peer.on('connection', openConnection);
 
 const subscriptions = [
   self.subscribe($self => {
-    console.log('own state changed', $self);
+    log('own state changed', $self);
     if (isHivemindBrain) emit({
       type: Messages.UPDATE_CLIENT_STATE,
       users: [...get(users).map(u => ({ ...u, conn: null })), $self]
     });
+    else get(hivemindConnection)?.send({
+      type: Messages.UPDATE_SERVER_STATE,
+      progress: $self.progress,
+      solved: $self.solved,
+    })
   }),
   gameProblem.subscribe($problem => {
     if (isHivemindBrain) emit({

@@ -4,6 +4,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
+    "@rollup/plugin-replace": "^4.0.0",
     "eslint": "^7.32.0",
     "nollup": "^0.13.13",
     "rollup": "^2.3.4",

@@ -3,6 +3,7 @@
   import { connectTo } from './networking.js';
   import { gameProblem, users, id, progress, solved } from './store.js';
   import { hivemindBrain, isHivemindBrain } from './constants.js';
+  import { log } from './utils.js';
 
   import CryptogramSolver from './CryptogramSolver.svelte';
   import OpponentProgress from './OpponentProgress.svelte';
@@ -14,7 +15,7 @@
   };
 
   $: joinLink = `${location.href}?game=${encodeURIComponent($id)}`;
-  $: console.log('users:', $users);
+  $: log('users:', $users);
 </script>
 
 <main>

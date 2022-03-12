@@ -1,6 +1,7 @@
 import svelte from 'rollup-plugin-svelte-hot';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import hmr from 'rollup-plugin-hot';
@@ -97,6 +98,13 @@ export default {
       dedupe: ['svelte'],
     }),
     commonjs(),
+
+    replace({
+      preventAssignment: true,
+      values: {
+        'process.env.PRODUCTION': isProduction
+      }
+    }),
 
     // In dev mode, call `npm run start` once
     // the bundle has been generated

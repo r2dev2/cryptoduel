@@ -2,6 +2,7 @@
   import { writable } from 'svelte/store';
   import { createEventDispatcher, onMount } from 'svelte';
   import { alphabet, splitQuote } from './quotes.js';
+  import { log } from './utils.js';
   import Word from './Word.svelte';
 
   /** @typedef {import('./quotes.js').EncryptedQuote} EncryptedQuote */
@@ -32,9 +33,7 @@
     ch => alphabet.includes(ch) && replacement[alphabet.indexOf(ch)] !== ''
   );
 
-  onMount(() => {
-    replacement = Array(26).fill('');
-  });
+  $: problem, replacement = Array(26).fill('');
 
   $: words = splitQuote(problem.ciphertext);
   $: solved = isCorrect(replacement, problem);
@@ -43,7 +42,7 @@
   }
   $: dispatch('progress', { progress: getProgress(replacement, problem.ciphertext) });
 
-  $: console.log('problem:', problem, 'replacement', replacement);
+  $: log('problem:', problem, 'replacement', replacement);
 </script>
 
 
