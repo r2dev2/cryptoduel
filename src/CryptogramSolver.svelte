@@ -46,6 +46,7 @@
 </script>
 
 
+<p>Solve this quote by {problem.author}</p>
 <div class="cryptogram" class:solved>
   {#each words as word}
     <Word
@@ -57,6 +58,10 @@
 </div>
 
 <style>
+  p {
+    margin: 0 0 2rem 0;
+  }
+
   .cryptogram {
     display: flex;
     flex-direction: row;

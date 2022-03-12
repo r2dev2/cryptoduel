@@ -5,6 +5,7 @@
   import { hivemindBrain, isHivemindBrain } from './constants.js';
   import { log } from './utils.js';
 
+  import JoinLink from './JoinLink.svelte';
   import CryptogramSolver from './CryptogramSolver.svelte';
   import OpponentProgress from './OpponentProgress.svelte';
 
@@ -20,7 +21,7 @@
 
 <main>
   {#if isHivemindBrain}
-    <p><a href={joinLink}>{joinLink}</a></p>
+    <JoinLink />
   {:else}
     {#await connectTo(hivemindBrain)}
       <p>Connecting to {hivemindBrain}</p>
