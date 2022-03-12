@@ -5,6 +5,7 @@
   import { hivemindBrain, isHivemindBrain } from './constants.js';
   import { log } from './utils.js';
 
+  import NameChooser from './NameChooser.svelte';
   import JoinLink from './JoinLink.svelte';
   import CryptogramSolver from './CryptogramSolver.svelte';
   import OpponentProgress from './OpponentProgress.svelte';
@@ -29,6 +30,9 @@
       <p>Successfully connected to {hivemindBrain}</p>
     {/await}
   {/if}
+
+  <NameChooser />
+
   {#if $gameProblem}
     <OpponentProgress />
     <CryptogramSolver
@@ -45,12 +49,18 @@
 </main>
 
 <style>
-  button {
-    margin-top: 2rem;
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   button:focus {
     border: 1px solid #ccc;
+  }
+
+  :global(button:hover) {
+    cursor: pointer;
   }
 
   :global(*:focus) {

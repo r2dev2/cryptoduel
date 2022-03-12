@@ -19,7 +19,7 @@ export const peer = new window.Peer();
  * @typedef {import('./store.js').User} User
  * @typedef {{ type: 0, name: string }} INIT_MSG
  * @typedef {{ type: 1, problem: import('./quotes.js').EncryptedQuote }} NEW_PROB_MSG
- * @typedef {{ type: 2, progress: null | boolean[], solved: boolean }} UPDATE_S_MSG
+ * @typedef {{ type: 2, progress: null | boolean[], solved: boolean, name: string }} UPDATE_S_MSG
  * @typedef {{ type: 3, users: User[] }} UPDATE_C_MSG
  * @typedef {INIT_MSG | NEW_PROB_MSG | UPDATE_S_MSG | UPDATE_C_MSG} PeerData
  * @typedef {<T extends PeerData>(otherId: string, data: T) => void} DataResponder
@@ -49,7 +49,7 @@ const onNewProblem = (id_, data) => {
 const updateFromClient = (id, data) => {
   if (!isHivemindBrain) return;
   users.update($users => $users.map(u => u.id !== id ? u : ({
-    ...u, progress: data.progress, solved: data.solved
+    ...u, name: data.name, progress: data.progress, solved: data.solved
   })));
 };
 
@@ -114,6 +114,7 @@ const subscriptions = [
     });
     else get(hivemindConnection)?.send({
       type: Messages.UPDATE_SERVER_STATE,
+      name: $self.name,
       progress: $self.progress,
       solved: $self.solved,
     })
