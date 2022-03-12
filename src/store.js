@@ -1,4 +1,4 @@
-import { derived, writable } from 'svelte/store';
+import { derived, get, writable } from 'svelte/store';
 
 /** @typedef {import('./quotes.js').EncryptedQuote} EncryptedQuote */
 
@@ -27,3 +27,11 @@ export const self = derived([id, name, progress, solved], ([id, name, progress, 
   return { id, name, progress, solved };
 });
 
+export const timeTakenByOpponents = derived([users, problemStart], ([$users, $problemStart]) => {
+  return new Map($users.map(u => [
+    u.id,
+    u.solved
+      ? get(timeTakenByOpponents).get(u.id)
+      : Date.now() - $problemStart
+  ]));
+});

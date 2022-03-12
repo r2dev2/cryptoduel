@@ -1,5 +1,6 @@
 <script>
-  import { users, gameProblem } from './store.js';
+  import { users, gameProblem, timeTakenByOpponents } from './store.js';
+  import { fmtTime } from './utils.js';
 
   $: emptyProgress = $gameProblem === null
     ? []
@@ -8,7 +9,11 @@
 
 <div class="opponent-progress-container">
   {#each $users as user}
-    <div class="user-container" class:solved={user.solved}>
+    <div
+      class="user-container"
+      class:solved={user.solved}
+      style="--desc: 'SOLVED ({fmtTime($timeTakenByOpponents.get(user.id))})';"
+    >
       <p>{user.name}:</p>
       <div class="opponent-progress">
         {#each (user.progress ?? emptyProgress) as hasFilled}
@@ -76,7 +81,7 @@
   }
 
   .solved .opponent-progress::after {
-    content: 'SOLVED';
+    content: var(--desc);
     left: 50%;
     transform: translate(-50%, -50%);
   }
