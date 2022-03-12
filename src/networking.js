@@ -112,6 +112,12 @@ const subscriptions = [
       users: [...get(users).map(u => ({ ...u, conn: null })), $self]
     });
   }),
+  gameProblem.subscribe($problem => {
+    if (isHivemindBrain) emit({
+      type: Messages.NEW_PROBLEM,
+      problem: $problem,
+    });
+  }),
 ];
 
 if (window.$cryptoduel$subscriptions) window.$cryptoduel$subscriptions.forEach(u => u());

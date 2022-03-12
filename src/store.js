@@ -16,7 +16,7 @@ export const users = writable(defaultUsers);
 
 export const id = writable('');
 export const gameProblem = writable(/** @type {EncryptedQuote | null} */ (null));
-export const name = writable(`name: person-${parseInt(Math.random() * 10000)}`);
+export const name = writable(`person-${parseInt(Math.random() * 10000)}`);
 export const hivemindConnection = writable(null);
 export const progress = writable([null, [true]][0]);
 export const solved = writable(false);
