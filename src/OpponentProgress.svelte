@@ -1,20 +1,20 @@
 <script>
-  import { users } from './store.js';
+  import { users, gameProblem } from './store.js';
+
+  $: emptyProgress = $gameProblem === null
+    ? []
+    : [...$gameProblem.ciphertext].map(_ => false);
 </script>
 
 <div class="opponent-progress-container">
   {#each $users as user}
     <div class="user-container" class:solved={user.solved}>
       <p>{user.name}:</p>
-      {#if user.progress == null}
-        <p>has not started yet...</p>
-      {:else}
-        <div class="opponent-progress">
-          {#each user.progress as hasFilled}
-            <div class="progress-item" class:has-done={hasFilled} />
-          {/each}
-        </div>
-      {/if}
+      <div class="opponent-progress">
+        {#each (user.progress ?? emptyProgress) as hasFilled}
+          <div class="progress-item" class:has-done={hasFilled} />
+        {/each}
+      </div>
     </div>
   {/each}
 </div>
