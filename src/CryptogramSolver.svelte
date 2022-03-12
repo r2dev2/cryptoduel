@@ -28,6 +28,10 @@
     ));
   };
 
+  const getProgress = (replacement, ciphertext) => [...ciphertext].map(
+    ch => alphabet.includes(ch) && replacement[alphabet.indexOf(ch)] !== ''
+  );
+
   onMount(() => {
     replacement = Array(26).fill('');
   });
@@ -37,6 +41,7 @@
   $: if (solved) {
     dispatch('solved');
   }
+  $: dispatch('progress', { progress: getProgress(replacement, problem.ciphertext) });
 
   $: console.log('problem:', problem, 'replacement', replacement);
 </script>
