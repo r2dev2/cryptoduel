@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@rollup/plugin-alias': ^3.1.9
   '@rollup/plugin-commonjs': ^14.0.0
   '@rollup/plugin-node-resolve': ^8.0.0
   '@rollup/plugin-replace': ^4.0.0
@@ -17,6 +18,7 @@ specifiers:
   svelte: ^3.0.0
 
 dependencies:
+  '@rollup/plugin-alias': 3.1.9_rollup@2.70.0
   eslint-plugin-svelte3: 3.4.1_eslint@7.32.0+svelte@3.46.4
   js-confetti: 0.10.2
   sirv-cli: 1.0.14
@@ -97,6 +99,16 @@ packages:
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+    dev: false
+
+  /@rollup/plugin-alias/3.1.9_rollup@2.70.0:
+    resolution: {integrity: sha512-QI5fsEvm9bDzt32k39wpOwZhVzRcL5ydcffUHMyLVaVaLeC70I8TJZ17F1z1eMoLu4E/UOcH9BWVkKpIKdrfiw==}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    dependencies:
+      rollup: 2.70.0
+      slash: 3.0.0
     dev: false
 
   /@rollup/plugin-commonjs/14.0.0_rollup@2.70.0:
@@ -1614,6 +1626,11 @@ packages:
       '@polka/url': 1.0.0-next.21
       mrmime: 1.0.0
       totalist: 1.1.0
+    dev: false
+
+  /slash/3.0.0:
+    resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
+    engines: {node: '>=8'}
     dev: false
 
   /slice-ansi/4.0.0:

@@ -1,15 +1,12 @@
 <script>
-  import { getQuoteGenerator, toAristocratCipher } from './quotes.js';
-  import { connectTo } from './networking.js';
-  import { gameProblem, users, progress, solved } from './store.js';
-  import { hivemindBrain, isHivemindBrain } from './constants.js';
-  import { confettiCelebration } from './actions.js';
-  import { log } from './utils.js';
+  import { getQuoteGenerator, toAristocratCipher } from '@/js/quotes.js';
+  import { connectTo } from '@/js/networking.js';
+  import { gameProblem, users, progress, solved } from '@/js/store.js';
+  import { hivemindBrain, isHivemindBrain } from '@/js/constants.js';
+  import { confettiCelebration } from '@/js/actions.js';
+  import { log } from '@/js/utils.js';
 
-  import NameChooser from './NameChooser.svelte';
-  import JoinLink from './JoinLink.svelte';
-  import CryptogramSolver from './CryptogramSolver.svelte';
-  import OpponentProgress from './OpponentProgress.svelte';
+  import { NameChooser, JoinLink, CryptogramSolver, OpponentProgress } from '@/components';
 
   const getNewQuote = getQuoteGenerator();
 

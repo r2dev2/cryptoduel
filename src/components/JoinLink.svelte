@@ -1,5 +1,7 @@
 <script>
-  import { id } from './store.js';
+  import { id as id_ } from '@/js/store.js';
+
+  export let id = id_;
 
   let clicked = false;
 

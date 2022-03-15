@@ -1,11 +1,12 @@
 <script>
   import { writable } from 'svelte/store';
   import { createEventDispatcher, onMount } from 'svelte';
-  import { alphabet, splitQuote } from './quotes.js';
-  import { log } from './utils.js';
+  import { alphabet, splitQuote } from '@/js/quotes.js';
+  import { log } from '@/js/utils.js';
+
   import Word from './Word.svelte';
 
-  /** @typedef {import('./quotes.js').EncryptedQuote} EncryptedQuote */
+  /** @typedef {import('@/js/quotes.js').EncryptedQuote} EncryptedQuote */
 
   /** @type {EncryptedQuote | null} */
   export let problem = null;

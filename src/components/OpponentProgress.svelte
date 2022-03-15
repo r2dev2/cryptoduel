@@ -1,6 +1,10 @@
 <script>
-  import { users, gameProblem, timeTakenByOpponents } from './store.js';
-  import { fmtTime } from './utils.js';
+  import { users as u, gameProblem as gp, timeTakenByOpponents as to } from '@/js/store.js';
+  import { fmtTime } from '@/js/utils.js';
+
+  export let users = u;
+  export let gameProblem = gp;
+  export let timeTakenByOpponents = to;
 
   $: emptyProgress = $gameProblem === null
     ? []

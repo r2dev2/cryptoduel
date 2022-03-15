@@ -1,5 +1,8 @@
 <script>
-  import { gameProblem, name } from './store.js';
+  import { gameProblem as gp, name as n } from '@/js/store.js';
+
+  export let gameProblem = gp;
+  export let name = n;
 </script>
 
 <div class="name-chooser">

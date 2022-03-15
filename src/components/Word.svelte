@@ -1,7 +1,7 @@
 <script>
   import { writable } from 'svelte/store';
   import { createEventDispatcher } from 'svelte';
-  import { alphabet } from './quotes.js';
+  import { alphabet } from '@/js/quotes.js';
 
   export let word = '';
   export let replacement = Array(26).fill('');

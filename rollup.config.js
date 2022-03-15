@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import alias from '@rollup/plugin-alias';
 import hmr from 'rollup-plugin-hot';
 
 // Set this to true to pass the --single flag to sirv (this serves your
@@ -56,7 +57,7 @@ function serve() {
 }
 
 export default {
-  input: 'src/main.js',
+  input: 'src/views/index/index.js',
   output: {
     sourcemap: true,
     format: 'iife',
@@ -104,6 +105,12 @@ export default {
       values: {
         'process.env.PRODUCTION': isProduction
       }
+    }),
+
+    alias({
+      entries: [
+        { find: '@', replacement: __dirname + '/src' }
+      ]
     }),
 
     // In dev mode, call `npm run start` once
