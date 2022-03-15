@@ -21,11 +21,12 @@ export const hivemindConnection = writable(null);
 export const progress = writable([null, [true]][0]);
 export const solved = writable(false);
 export const connections = new Map(); // id -> connection
-export const problemStart = writable(Date.now());
 
 export const self = derived([id, name, progress, solved], ([id, name, progress, solved]) => {
   return { id, name, progress, solved };
 });
+
+export const problemStart = derived(gameProblem, () => Date.now());
 
 export const timeTakenByOpponents = derived([users, problemStart], ([$users, $problemStart]) => {
   return new Map($users.map(u => [

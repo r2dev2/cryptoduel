@@ -5,11 +5,13 @@
 
   export let word = '';
   export let replacement = Array(26).fill('');
+  export let disabled = false;
 
   const dispatch = createEventDispatcher();
 
   /** @type {(i: number) => (e: KeyEvent) => void} */
   const keyDown = i => e => {
+    if (disabled) return;
     dispatch('replace', {
       from: word[i],
       to: e.key.toUpperCase(),

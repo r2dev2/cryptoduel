@@ -5,6 +5,7 @@ import {
   id,
   hivemindConnection,
   name,
+  problemStart,
   progress,
   self,
   solved,

@@ -1,8 +1,9 @@
 <script>
   import { getQuoteGenerator, toAristocratCipher } from './quotes.js';
   import { connectTo } from './networking.js';
-  import { gameProblem, users, id, progress, solved } from './store.js';
+  import { gameProblem, users, progress, solved } from './store.js';
   import { hivemindBrain, isHivemindBrain } from './constants.js';
+  import { confettiCelebration } from './actions.js';
   import { log } from './utils.js';
 
   import NameChooser from './NameChooser.svelte';
@@ -16,10 +17,11 @@
     getNewQuote().then(quote => gameProblem.set(toAristocratCipher(quote)));
   };
 
-  $: joinLink = `${location.href}?game=${encodeURIComponent($id)}`;
   $: log('users:', $users);
+  $: if ($solved) confettiCelebration();
 </script>
 
+<canvas id="confetti" />
 <main>
   {#if isHivemindBrain}
     <JoinLink />
@@ -65,6 +67,16 @@
 
   :global(*:focus) {
     outline: none;
+  }
+
+  #confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+    pointer-events: none;
   }
 
   :root {

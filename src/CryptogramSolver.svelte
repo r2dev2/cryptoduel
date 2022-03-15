@@ -52,6 +52,7 @@
     <Word
       {word}
       {replacement}
+      disabled={solved}
       on:replace={(e) => replace(e.detail)}
     />
   {/each}
