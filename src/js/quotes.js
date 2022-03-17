@@ -6,12 +6,15 @@ import { amountChunks } from './meta.js';
 
 
 export const getQuoteGenerator = () => {
+  let quoteIndex = 0;
+
   const chunk = fetch(`./quotes/${parseInt(Math.random() * (amountChunks - 1))}.json`)
-    .then(r => r.json());
+    .then(r => r.json())
+    .then(shuffleArray);
 
   const newQuote = async () => {
     const quotes = await chunk;
-    const quote = quotes[parseInt(Math.random() * quotes.length)];
+    const quote = quotes[(quoteIndex++) % quotes.length];
     return { author: quote.quoteAuthor, text: cleanUpText(quote.quoteText) };
   };
 
