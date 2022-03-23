@@ -1,11 +1,12 @@
 import { get, writable } from 'svelte/store';
-import { external } from '@/js/constants.js';
+import { external, Messages } from '@/js/constants.js';
 
 const listeners = new Map([
   ['open', []],
   ['connection', []],
 ]);
 const peerConnections = [];
+const messagesTo = [];
 
 const Peer = function () {
   this.on = (msg, cb) => listeners.get(msg).push(cb);
@@ -25,6 +26,9 @@ const Peer = function () {
       on(etype, cb) {
         listeners.set(etype, listeners.get(etype) ?? new Set());
         listeners.get(etype).add(cb);
+      },
+      send(msg) {
+        messagesTo.push({ msg, to: id });
       }
     };
   };
@@ -44,8 +48,11 @@ const givePeerConnectionId = id =>
 let stores = require('@/js/store.js');
 
 const commonReset = () => {
+  process.env.PRODUCTION = true;
   listeners.set('open', []);
   listeners.set('connection', []);
+  peerConnections.splice(peerConnections.length);
+  messagesTo.splice(messagesTo.length);
   jest.resetModules();
   stores = require('@/js/store.js');
 };
@@ -55,10 +62,10 @@ describe('opening of the peer connection', () => {
   beforeEach(() => {
     commonReset();
     require('@/js/constants.js').external.Peer = Peer;
+    getNetworking();
   });
 
   it('updates the id store', () => {
-    console.log('net', getNetworking());
     stores.id.set('');
 
     givePeerConnectionId(testId1);
@@ -66,7 +73,7 @@ describe('opening of the peer connection', () => {
   });
 });
 
-describe('connecting to a hivemind', () => {
+describe('node to hivemind', () => {
   let networking;
 
   beforeEach(() => {
@@ -84,9 +91,19 @@ describe('connecting to a hivemind', () => {
 
   it('sends connection request to hivemind', () => {
     networking.connectTo(testId2);
+    expect(peerConnections.length).toBe(1)
+    expect(peerConnections[0].id).toEqual(testId2);
+  });
+
+  it('sends the initial state to the hivemind', () => {
+    networking.connectTo(testId2);
+    const { stream } = peerConnections[0];
+    stream.set({ etype: 'open', edata: null });
     setTimeout(() => {
-      expect(peerConnections.length).toBe(1)
-      expect(peerConnections[0].id).toEqual(testId2);
-    });
+      expect(messagesTo.length).toBe(1);
+      expect(messagesTo[0].id).toEqual(testId2);
+      expect(messagesTo[0].type).toEqual(Messages.INIT_STATE);
+      expect(messagesTo[0].name).not.toBeNullOrUndefined();
+    }, 200);
   });
 });
