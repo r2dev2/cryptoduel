@@ -11,3 +11,5 @@ export const fmtTime = ms => {
     : `${minutes}:${seconds}`;
   return res.replace(/^0+/g, '');
 };
+
+export const sleep = ms => new Promise(res => setTimeout(res, ms));

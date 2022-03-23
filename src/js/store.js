@@ -36,3 +36,13 @@ export const timeTakenByOpponents = derived([users, problemStart], ([$users, $pr
       : Date.now() - $problemStart
   ]));
 });
+
+export const resetStores = () => {
+  id.set('');
+  gameProblem.set(null);
+  name.set('');
+  hivemindConnection.set(null);
+  progress.set(null);
+  solved.set(false);
+  connections.clear();
+};

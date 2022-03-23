@@ -1,3 +1,7 @@
+export const external = {
+  Peer: window.Peer
+};
+
 /** @enum {number} */
 export const Messages = {
   INIT_STATE: 0,

@@ -11,10 +11,10 @@ import {
   solved,
   users
 } from './store.js';
-import { hivemindBrain, isHivemindBrain, Messages } from './constants.js';
+import { external, hivemindBrain, isHivemindBrain, Messages } from './constants.js';
 import { log } from './utils.js';
 
-export const peer = new window.Peer();
+export const peer = new external.Peer();
 
 /**
  * @typedef {import('./store.js').User} User
@@ -27,7 +27,7 @@ export const peer = new window.Peer();
  */
 
 /** @type {(otherId: string) => (data: PeerData) => void} */
-const onData = otherId => data => {
+export const onData = otherId => data => {
   log('got data', data);
   if (dataResponders[data.type]) {
     dataResponders[data.type](otherId, data);
@@ -98,7 +98,7 @@ export const connectTo = otherId => new Promise((res) => {
   const unsub = id.subscribe($id => {
     if ($id === '') return;
     const conn = peer.connect(otherId);
-    unsub();
+    setTimeout(() => unsub());
     openConnection(conn).then(res);
   })
 });
