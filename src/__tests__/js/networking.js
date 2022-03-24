@@ -1,5 +1,7 @@
 import { get, writable } from 'svelte/store';
 import { external, Messages } from '@/js/constants.js';
+import { sleep } from '@/js/utils.js';
+import * as Constants from '@/js/constants.js';
 
 const listeners = new Map([
   ['open', []],
@@ -29,7 +31,8 @@ const Peer = function () {
       },
       send(msg) {
         messagesTo.push({ msg, to: id });
-      }
+      },
+      peer: id
     };
   };
 };
@@ -37,6 +40,8 @@ const Peer = function () {
 
 const testId1 = 'test-id-1-skdfjl';
 const testId2 = 'test-id-2-fdjksl';
+const testName = 'jeff';
+const testProgress = [true, false];
 
 // needed to mock Peer
 const getNetworking = () => require('@/js/networking.js');
@@ -51,12 +56,19 @@ const commonReset = () => {
   process.env.PRODUCTION = true;
   listeners.set('open', []);
   listeners.set('connection', []);
-  peerConnections.splice(peerConnections.length);
-  messagesTo.splice(messagesTo.length);
+  peerConnections.splice(0, peerConnections.length);
+  messagesTo.splice(0, messagesTo.length);
   jest.resetModules();
   stores = require('@/js/store.js');
 };
 
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
+afterEach(() => {
+  jest.useRealTimers();
+});
 
 describe('opening of the peer connection', () => {
   beforeEach(() => {
@@ -73,13 +85,14 @@ describe('opening of the peer connection', () => {
   });
 });
 
-describe('node to hivemind', () => {
+describe('networking as a node', () => {
   let networking;
 
   beforeEach(() => {
     commonReset();
 
     jest.doMock('@/js/constants.js', () => ({
+      ...Constants,
       hivemindBrain: testId2,
       isHivemindBrain: false,
       external: { Peer },
@@ -89,21 +102,51 @@ describe('node to hivemind', () => {
     givePeerConnectionId(testId1);
   });
 
-  it('sends connection request to hivemind', () => {
-    networking.connectTo(testId2);
-    expect(peerConnections.length).toBe(1)
-    expect(peerConnections[0].id).toEqual(testId2);
-  });
-
-  it('sends the initial state to the hivemind', () => {
+  const openConnection = () => {
     networking.connectTo(testId2);
     const { stream } = peerConnections[0];
     stream.set({ etype: 'open', edata: null });
-    setTimeout(() => {
+    sleep(1000);
+    jest.runAllTimers();
+    return stream;
+  }
+
+  describe('node to hivemind', () => {
+    it('sends connection request to hivemind', () => {
+      networking.connectTo(testId2);
+      expect(peerConnections.length).toBe(1)
+      expect(peerConnections[0].id).toEqual(testId2);
+    });
+
+    it('stores the hivemind connection', () => {
+      openConnection();
+
+      expect(get(stores.hivemindConnection)).not.toBe(null);
+    });
+
+    it('sends the initial state to the hivemind', () => {
+      openConnection();
+
       expect(messagesTo.length).toBe(1);
-      expect(messagesTo[0].id).toEqual(testId2);
-      expect(messagesTo[0].type).toEqual(Messages.INIT_STATE);
-      expect(messagesTo[0].name).not.toBeNullOrUndefined();
-    }, 200);
+      expect(messagesTo[0].to).toEqual(testId2);
+      expect(messagesTo[0].msg.type).toEqual(Messages.INIT_STATE);
+      expect(messagesTo[0].msg.name).not.toEqual(null);
+    });
+
+    it('updates the hivemind when node\'s state changes', () => {
+      openConnection();
+      
+      stores.name.set(testName);
+      stores.progress.set(testProgress);
+
+      expect(messagesTo.length).toBe(3);
+      expect(messagesTo.map(m => m.msg.type)).toEqual([
+        Messages.INIT_STATE,
+        Messages.UPDATE_SERVER_STATE,
+        Messages.UPDATE_SERVER_STATE
+      ]);
+      expect(messagesTo[1].msg.name).toEqual(testName);
+      expect(messagesTo[2].msg.progress).toEqual(testProgress);
+    });
   });
 });
