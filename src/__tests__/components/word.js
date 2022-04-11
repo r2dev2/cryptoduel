@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import { render } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 

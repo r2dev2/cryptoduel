@@ -1,14 +1,13 @@
 <script>
   import { users as u, gameProblem as gp, timeTakenByOpponents as to } from '@/js/store.js';
   import { fmtTime } from '@/js/utils.js';
+  import { getEmptyProgress } from '@/js/cryptoduelutils.js';
 
   export let users = u;
   export let gameProblem = gp;
   export let timeTakenByOpponents = to;
 
-  $: emptyProgress = $gameProblem === null
-    ? []
-    : [...$gameProblem.ciphertext].map(_ => false);
+  $: emptyProgress = getEmptyProgress($gameProblem);
 </script>
 
 <div class="opponent-progress-container">

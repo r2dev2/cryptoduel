@@ -10,4 +10,4 @@ window.$cryptoduel$confetti = confetti;
 
 export const confettiCelebration = () => {
   confetti.addConfetti();
-}
+};

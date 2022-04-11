@@ -12,6 +12,7 @@ import {
   users
 } from './store.js';
 import { external, hivemindBrain, isHivemindBrain, Messages } from './constants.js';
+import { getEmptyProgress } from './cryptoduelutils.js';
 import { log } from './utils.js';
 
 export const peer = new external.Peer();
@@ -100,7 +101,7 @@ export const connectTo = otherId => new Promise((res) => {
     const conn = peer.connect(otherId);
     setTimeout(() => unsub());
     openConnection(conn).then(res);
-  })
+  });
 });
 
 peer.on('open', id.set);
@@ -118,13 +119,20 @@ const subscriptions = [
       name: $self.name,
       progress: $self.progress,
       solved: $self.solved,
-    })
+    });
   }),
   gameProblem.subscribe($problem => {
-    if (isHivemindBrain) emit({
-      type: Messages.NEW_PROBLEM,
-      problem: $problem,
-    });
+    if ($problem === null) return;
+    if (isHivemindBrain) [
+      {
+        type: Messages.UPDATE_CLIENT_STATE,
+        users: getEmptyProgress($problem),
+      },
+      {
+        type: Messages.NEW_PROBLEM,
+        problem: $problem,
+      },
+    ].forEach(emit);
   }),
 ];
 

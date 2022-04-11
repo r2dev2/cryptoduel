@@ -84,6 +84,6 @@ describe('quote to aristocrat cipher', () => {
       if (alphabet.includes(quoteC)) {
         expect(quoteC).not.toEqual(cipherC);
       }
-    })
+    });
   });
 });
