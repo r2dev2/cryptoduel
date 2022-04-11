@@ -1,4 +1,5 @@
 export const external = {
+  // @ts-ignore
   Peer: window.Peer,
 };
 

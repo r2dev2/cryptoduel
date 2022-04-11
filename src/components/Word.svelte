@@ -8,7 +8,7 @@
 
   const dispatch = createEventDispatcher();
 
-  /** @type {(i: number) => (e: KeyEvent) => void} */
+  /** @type {(i: number) => (e: KeyboardEvent) => void} */
   const keyDown = (i) => (e) => {
     if (disabled) return;
     dispatch('replace', {
@@ -17,6 +17,7 @@
     });
   };
 
+  /** @type {(word: string, replacement: string[]) => Array<string | null>} */
   const replaceChars = (word, replacement) =>
     [...word].map((ch) => {
       const alphabetIdx = alphabet.indexOf(ch);

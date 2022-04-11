@@ -7,13 +7,15 @@ export const getQuoteGenerator = () => {
   let quoteIndex = 0;
 
   const chunk = fetch(
-    `./quotes/${parseInt(Math.random() * (amountChunks - 1))}.json`
+    `./quotes/${Math.floor(Math.random() * (amountChunks - 1))}.json`
   )
     .then((r) => r.json())
     .then(shuffleArray);
 
   const newQuote = async () => {
-    const quotes = await chunk;
+    const quotes = /** @type {{ quoteAuthor: string, quoteText: string }[]} */ (
+      await chunk
+    );
     const quote = quotes[quoteIndex++ % quotes.length];
     return { author: quote.quoteAuthor, text: cleanUpText(quote.quoteText) };
   };
@@ -23,12 +25,18 @@ export const getQuoteGenerator = () => {
 
 export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+/**
+ * @template T
+ * @param {Array<T>} arr
+ * @returns {Array<T>}
+ */
 const shuffleArray = (arr) =>
   arr
-    .map((a) => [Math.random(), a])
+    .map((a) => /** @type {[number, T]} */ ([Math.random(), a]))
     .sort((a, b) => a[0] - b[0])
     .map((a) => a[1]);
 
+/** @type {() => string[]} */
 const generateRandomEncryption = () => {
   const encMap = shuffleArray([...Array(26).keys()]);
   if (encMap.some((x, i) => x === i)) return generateRandomEncryption();

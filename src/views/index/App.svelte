@@ -28,9 +28,9 @@
   {#if isHivemindBrain}
     <JoinLink />
   {:else}
-    {#await connectTo(hivemindBrain)}
+    {#await connectTo(hivemindBrain ?? '')}
       <p>Connecting to {hivemindBrain}</p>
-    {:then conn}
+    {:then _}
       <p>Successfully connected to {hivemindBrain}</p>
     {/await}
   {/if}

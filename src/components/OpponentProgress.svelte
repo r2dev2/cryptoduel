@@ -19,7 +19,9 @@
     <div
       class="user-container"
       class:solved={user.solved}
-      style="--desc: 'SOLVED ({fmtTime($timeTakenByOpponents.get(user.id))})';"
+      style="--desc: 'SOLVED ({fmtTime(
+        $timeTakenByOpponents.get(user.id) ?? 0
+      )})';"
     >
       <p>{user.name}:</p>
       <div class="opponent-progress">

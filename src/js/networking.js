@@ -22,19 +22,25 @@ export const peer = new external.Peer();
 
 /**
  * @typedef {import('./store.js').User} User
+ * @typedef {import('peerjs').DataConnection} Connection
  * @typedef {{ type: 0, name: string }} INIT_MSG
  * @typedef {{ type: 1, problem: import('./quotes.js').EncryptedQuote }} NEW_PROB_MSG
  * @typedef {{ type: 2, progress: null | boolean[], solved: boolean, name: string }}
  * UPDATE_S_MSG
  * @typedef {{ type: 3, users: User[] }} UPDATE_C_MSG
  * @typedef {INIT_MSG | NEW_PROB_MSG | UPDATE_S_MSG | UPDATE_C_MSG} PeerData
- * @typedef {<T extends PeerData>(otherId: string, data: T) => void} DataResponder
+ */
+
+/**
+ * @template T extends PeerData
+ * @typedef {(otherId: string, data: T) => void} DataResponder
  */
 
 /** @type {(otherId: string) => (data: PeerData) => void} */
 export const onData = (otherId) => (data) => {
   log('got data', data);
   if (dataResponders[data.type]) {
+    // @ts-ignore
     dataResponders[data.type](otherId, data);
   }
 };
@@ -53,7 +59,7 @@ const initializeRemotePlayer = (id, data) => {
 };
 
 /** @type {DataResponder<NEW_PROB_MSG>} */
-const onNewProblem = (id_, data) => {
+const onNewProblem = (_, data) => {
   gameProblem.set(data.problem);
 };
 
@@ -75,7 +81,7 @@ const updateFromClient = (id, data) => {
 };
 
 /** @type {DataResponder<UPDATE_C_MSG>} */
-const updateFromServer = (id_, data) => {
+const updateFromServer = (_, data) => {
   if (isHivemindBrain) return;
   const ourId = get(id);
   users.set(data.users.filter((u) => u.id !== ourId));
@@ -94,13 +100,13 @@ const removePlayer = (otherId) => () => {
   connections.delete(otherId);
 };
 
-const sendInitialState = (conn) =>
+const sendInitialState = (/** @type {Connection} */ conn) =>
   conn?.send({
     type: Messages.INIT_STATE,
     name: get(name),
   });
 
-const openConnection = (conn) =>
+const openConnection = (/** @type {Connection} */ conn) =>
   new Promise((res) => {
     conn.on('open', () => {
       if (conn.peer === hivemindBrain) hivemindConnection.set(conn);
@@ -114,8 +120,10 @@ const openConnection = (conn) =>
     });
   });
 
-const emit = (msg) => connections.forEach((conn) => conn.send(msg));
+const emit = (/** @type {any} */ msg) =>
+  connections.forEach((conn) => conn.send(msg));
 
+/** @type {(otherId: string) => Promise<Connection>} */
 export const connectTo = (otherId) =>
   new Promise((res) => {
     const unsub = id.subscribe(($id) => {
@@ -168,6 +176,9 @@ const subscriptions = [
   }),
 ];
 
+// @ts-ignore
 if (window.$cryptoduel$subscriptions)
+  // @ts-ignore
   window.$cryptoduel$subscriptions.forEach((u) => u());
+// @ts-ignore
 window.$cryptoduel$subscriptions = subscriptions;

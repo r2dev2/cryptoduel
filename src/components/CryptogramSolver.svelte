@@ -14,6 +14,7 @@
 
   let replacement = Array(26).fill('');
 
+  /** @type {(replacement: { from: string, to: string }) => void} */
   const replace = ({ from, to }) => {
     if ((to.length !== 1 || !/[a-zA-Z]/.test(to)) && to !== 'BACKSPACE') return;
     const newReplacement = [...replacement];
@@ -21,6 +22,7 @@
     replacement = newReplacement;
   };
 
+  /** @type {(replacement: string[], problem: EncryptedQuote | null) => boolean} */
   const isCorrect = (replacement, problem) => {
     if (!problem) return false;
     return [...problem.ciphertext].every(
@@ -30,6 +32,7 @@
     );
   };
 
+  /** @type {(replacement: string[], ciphertext: string) => boolean[]} */
   const getProgress = (replacement, ciphertext) =>
     [...ciphertext].map(
       (ch) => alphabet.includes(ch) && replacement[alphabet.indexOf(ch)] !== ''
@@ -37,29 +40,31 @@
 
   $: problem, (replacement = Array(26).fill(''));
 
-  $: words = splitQuote(problem.ciphertext);
+  $: words = splitQuote(problem?.ciphertext ?? '');
   $: solved = isCorrect(replacement, problem);
   $: if (solved) {
     dispatch('solved');
   }
   $: dispatch('progress', {
-    progress: getProgress(replacement, problem.ciphertext),
+    progress: getProgress(replacement, problem?.ciphertext ?? ''),
   });
 
   $: log('problem:', problem, 'replacement', replacement);
 </script>
 
-<p>Solve this quote by {problem.author}</p>
-<div class="cryptogram" class:solved>
-  {#each words as word}
-    <Word
-      {word}
-      {replacement}
-      disabled={solved}
-      on:replace={(e) => replace(e.detail)}
-    />
-  {/each}
-</div>
+{#if problem}
+  <p>Solve this quote by {problem.author}</p>
+  <div class="cryptogram" class:solved>
+    {#each words as word}
+      <Word
+        {word}
+        {replacement}
+        disabled={solved}
+        on:replace={(e) => replace(e.detail)}
+      />
+    {/each}
+  </div>
+{/if}
 
 <style>
   p {

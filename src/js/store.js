@@ -9,11 +9,11 @@ const defaultUsers = [
     name: '',
     progress: [null, [true]][0],
     solved: false,
-    conn: {},
   },
 ].slice(1);
 
 /** @typedef {typeof defaultUsers[0]} User */
+/** @typedef {import('peerjs').DataConnection} Connection */
 
 export const users = writable(defaultUsers);
 
@@ -21,10 +21,13 @@ export const id = writable('');
 export const gameProblem = writable(
   /** @type {EncryptedQuote | null} */ (null)
 );
-export const name = writable(`person-${parseInt(Math.random() * 10000)}`);
-export const hivemindConnection = writable(null);
+export const name = writable(`person-${Math.floor(Math.random() * 10000)}`);
+export const hivemindConnection = writable(
+  /** @type {Connection | null} */ (null)
+);
 export const progress = writable([null, [true]][0]);
 export const solved = writable(false);
+/** @type {Map<string, Connection>} */
 export const connections = new Map(); // id -> connection
 
 export const self = derived(
@@ -36,6 +39,7 @@ export const self = derived(
 
 export const problemStart = derived(gameProblem, () => Date.now());
 
+/** @type {import('svelte/store').Readable<Map<string, number>>} */
 export const timeTakenByOpponents = derived(
   [users, problemStart],
   ([$users, $problemStart]) => {
@@ -43,7 +47,7 @@ export const timeTakenByOpponents = derived(
       $users.map((u) => [
         u.id,
         u.solved
-          ? get(timeTakenByOpponents).get(u.id)
+          ? get(timeTakenByOpponents).get(u.id) ?? Date.now() - $problemStart
           : Date.now() - $problemStart,
       ])
     );
