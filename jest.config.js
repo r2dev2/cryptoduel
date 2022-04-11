@@ -7,10 +7,10 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/'],
   setupFilesAfterEnv: [
     // '<rootDir>/jest.setup.js',
-    '@testing-library/jest-dom/extend-expect'
+    '@testing-library/jest-dom/extend-expect',
   ],
   transform: {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.svelte$': ['svelte-jester'],
-  }
+  },
 };

@@ -1,5 +1,5 @@
 import { get, writable } from 'svelte/store';
-import { external, Messages } from '@/js/constants.js';
+import { Messages } from '@/js/constants.js';
 import { sleep } from '@/js/utils.js';
 import * as Constants from '@/js/constants.js';
 
@@ -10,14 +10,14 @@ const listeners = new Map([
 const peerConnections = [];
 const messagesTo = [];
 
-const connection = id => {
+const connection = (id) => {
   const stream = writable(null);
   const listeners = new Map();
-  stream.subscribe(s => {
+  stream.subscribe((s) => {
     if (!s) return;
     const { etype, edata } = s;
     if (listeners.has(etype)) {
-      listeners.get(etype).forEach(cb => cb(edata));
+      listeners.get(etype).forEach((cb) => cb(edata));
     }
   });
   peerConnections.push({ id, stream });
@@ -30,7 +30,7 @@ const connection = id => {
     send(msg) {
       messagesTo.push({ msg, to: id });
     },
-    peer: id
+    peer: id,
   };
 };
 
@@ -39,20 +39,23 @@ const Peer = function () {
   this.connect = connection;
 };
 
-
 const testId1 = 'test-id-1-skdfjl';
 const testId2 = 'test-id-2-fdjksl';
 const testName = 'jeff';
 const testName2 = 'joe';
 const testProgress = [false, false, false];
-const testProblem = { author: 'bru', text: 'elo', plaintext: 'ELO', ciphertext: 'ABC' };
+const testProblem = {
+  author: 'bru',
+  text: 'elo',
+  plaintext: 'ELO',
+  ciphertext: 'ABC',
+};
 
 // needed to mock Peer
 const getNetworking = () => require('@/js/networking.js');
 
-const givePeerConnectionId = id =>
-  listeners.get('open').forEach(cb => cb(testId1));
-
+const givePeerConnectionId = (id) =>
+  listeners.get('open').forEach((cb) => cb(testId1));
 
 let stores = require('@/js/store.js');
 
@@ -133,15 +136,15 @@ describe('networking as a node', () => {
       expect(messagesTo[0].msg.name).not.toEqual(null);
     });
 
-    it('updates the hivemind when node\'s state changes', () => {
+    it("updates the hivemind when node's state changes", () => {
       stores.name.set(testName);
       stores.progress.set(testProgress);
 
       expect(messagesTo.length).toBe(3);
-      expect(messagesTo.map(m => m.msg.type)).toEqual([
+      expect(messagesTo.map((m) => m.msg.type)).toEqual([
         Messages.INIT_STATE,
         Messages.UPDATE_SERVER_STATE,
-        Messages.UPDATE_SERVER_STATE
+        Messages.UPDATE_SERVER_STATE,
       ]);
       expect(messagesTo[1].msg.name).toEqual(testName);
       expect(messagesTo[2].msg.progress).toEqual(testProgress);
@@ -152,19 +155,29 @@ describe('networking as a node', () => {
     it('updates the game problem when hivemind starts new game', () => {
       networking.onData(testId2)({
         type: Messages.NEW_PROBLEM,
-        problem: testProblem
+        problem: testProblem,
       });
 
       expect(get(stores.gameProblem)).toEqual(testProblem);
     });
 
     it('updates the state of other users', () => {
-      const client = { id: testId1, name: 'bru', progress: null, solved: false };
-      const server = { id: testId2, name: testName, progress: [false], solved: false };
+      const client = {
+        id: testId1,
+        name: 'bru',
+        progress: null,
+        solved: false,
+      };
+      const server = {
+        id: testId2,
+        name: testName,
+        progress: [false],
+        solved: false,
+      };
 
       networking.onData(testId2)({
         type: Messages.UPDATE_CLIENT_STATE,
-        users: [ client, server ]
+        users: [client, server],
       });
 
       expect(get(stores.users)).toEqual([server]);
@@ -191,12 +204,13 @@ describe('networking as a hivemind', () => {
 
     // initialize first player
     networking.onData(testId1)({
-      type: Messages.INIT_STATE, name: testName
+      type: Messages.INIT_STATE,
+      name: testName,
     });
-  }); 
+  });
 
   const openConnection = () => {
-    listeners.get('connection').forEach(cb => cb(connection(testId1)));
+    listeners.get('connection').forEach((cb) => cb(connection(testId1)));
     const { stream } = peerConnections[0];
     stream.set({ etype: 'open', edata: null });
     sleep(1000);
@@ -218,7 +232,7 @@ describe('networking as a hivemind', () => {
         type: Messages.UPDATE_SERVER_STATE,
         progress: testProgress,
         name: testName,
-        solved: false
+        solved: false,
       });
 
       expect(get(stores.users)[0].progress).toEqual(testProgress);
@@ -226,9 +240,9 @@ describe('networking as a hivemind', () => {
 
       networking.onData(testId1)({
         type: Messages.UPDATE_SERVER_STATE,
-        progress: testProgress.map(_ => true),
+        progress: testProgress.map((_) => true),
         name: testName2,
-        solved: true
+        solved: true,
       });
 
       expect(get(stores.users)[0].progress.every(Boolean)).toBe(true);
@@ -240,17 +254,27 @@ describe('networking as a hivemind', () => {
   describe('sending to node', () => {
     it('sends a new game message when game is created', () => {
       stores.gameProblem.set(testProblem);
-      expect(messagesTo.length).toBe(3);
-      expect(messagesTo[2].msg.type).toEqual(Messages.NEW_PROBLEM);
-      expect(messagesTo[2].msg.problem).toEqual(testProblem);
+
+      expect(messagesTo.length).toBe(4);
+      expect(messagesTo.map((m) => m.msg)).toContainEqual({
+        type: Messages.NEW_PROBLEM,
+        problem: testProblem,
+      });
     });
 
     it('sets all the users progress to null when game is created', () => {
       stores.gameProblem.set(testProblem);
-      expect(messagesTo.length).toBe(3);
-      expect(messagesTo[1].msg.type).toEqual(Messages.UPDATE_CLIENT_STATE);
-      expect(messagesTo[1].msg.users.every(u => u.progress == null && !u.solved))
-        .toBe(true);
+
+      expect(messagesTo.length).toBe(4);
+
+      const lastUpdate = [...messagesTo]
+        .reverse()
+        .find((m) => m.msg.type === Messages.UPDATE_CLIENT_STATE);
+
+      expect(lastUpdate).not.toBe(undefined);
+      expect(
+        lastUpdate.msg.users.every((u) => u.progress === null && !u.solved)
+      ).toBe(true);
     });
   });
 });

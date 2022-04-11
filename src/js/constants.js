@@ -1,5 +1,5 @@
 export const external = {
-  Peer: window.Peer
+  Peer: window.Peer,
 };
 
 /** @enum {number} */
@@ -11,4 +11,4 @@ export const Messages = {
 };
 
 export const hivemindBrain = new URLSearchParams(location.search).get('game');
-export const isHivemindBrain = hivemindBrain == null;
+export const isHivemindBrain = hivemindBrain === null;

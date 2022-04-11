@@ -1,5 +1,4 @@
 <script>
-  import { writable } from 'svelte/store';
   import { createEventDispatcher } from 'svelte';
   import { alphabet } from '@/js/quotes.js';
 
@@ -10,7 +9,7 @@
   const dispatch = createEventDispatcher();
 
   /** @type {(i: number) => (e: KeyEvent) => void} */
-  const keyDown = i => e => {
+  const keyDown = (i) => (e) => {
     if (disabled) return;
     dispatch('replace', {
       from: word[i],
@@ -18,11 +17,12 @@
     });
   };
 
-  const replaceChars = (word, replacement) => [...word].map(ch => {
-    const alphabetIdx = alphabet.indexOf(ch);
-    if (alphabetIdx === -1) return null;
-    return replacement[alphabetIdx];
-  });
+  const replaceChars = (word, replacement) =>
+    [...word].map((ch) => {
+      const alphabetIdx = alphabet.indexOf(ch);
+      if (alphabetIdx === -1) return null;
+      return replacement[alphabetIdx];
+    });
 
   // null if char is not alphabetic, '' if no replacement, char if replacement
   $: replacedChars = replaceChars(word, replacement);

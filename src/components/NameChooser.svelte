@@ -11,7 +11,7 @@
     type="text"
     id="username"
     name="username"
-    disabled={$gameProblem != null}
+    disabled={$gameProblem !== null}
     bind:value={$name}
   />
 </div>

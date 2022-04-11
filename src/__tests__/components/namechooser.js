@@ -34,7 +34,7 @@ describe('<NameChooser />', () => {
 
     userEvent.type(inputEl, testUsername);
     await tick();
-    gameProblem.set({ });
+    gameProblem.set({});
     await tick();
     userEvent.type(inputEl, testUsername2);
     await tick();

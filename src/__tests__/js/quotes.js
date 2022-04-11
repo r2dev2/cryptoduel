@@ -1,21 +1,28 @@
-import { alphabet, getQuoteGenerator, toAristocratCipher } from '@/js/quotes.js';
+import {
+  alphabet,
+  getQuoteGenerator,
+  toAristocratCipher,
+} from '@/js/quotes.js';
 
-const getFetchMock = respond => async url => ({
-  json: async () => respond(url)
+const getFetchMock = (respond) => async (url) => ({
+  json: async () => respond(url),
 });
 
-const mockFetchResponse = respond => window.fetch = getFetchMock(respond);
+const mockFetchResponse = (respond) => (window.fetch = getFetchMock(respond));
 
 const remoteTestQuotes = [
   { quoteText: 'Though shalt not pass.', quoteAuthor: 'anon' },
-  { quoteText: 'The quick brown fox jumps over the lazy dog.', quoteAuthor: 'me' },
-  { quoteText: 'I don\'t like sand.', quoteAuthor: 'Anakin Skywalker' },
+  {
+    quoteText: 'The quick brown fox jumps over the lazy dog.',
+    quoteAuthor: 'me',
+  },
+  { quoteText: "I don't like sand.", quoteAuthor: 'Anakin Skywalker' },
 ];
 
 const ramTestQuotes = [
   { text: 'Though shalt not pass.', author: 'anon' },
   { text: 'The quick brown fox jumps over the lazy dog.', author: 'me' },
-  { text: 'I don\'t like sand.', author: 'Anakin Skywalker' },
+  { text: "I don't like sand.", author: 'Anakin Skywalker' },
 ];
 
 const MANY_TRIES = 1e2;
@@ -23,7 +30,7 @@ const MANY_TRIES = 1e2;
 describe('quote generator', () => {
   it('generates quotes', async () => {
     let fired = 0;
-    mockFetchResponse(url => {
+    mockFetchResponse((url) => {
       expect(url).toMatch(/quotes\/\d+\.json$/);
       fired++;
       return remoteTestQuotes;
@@ -33,7 +40,8 @@ describe('quote generator', () => {
     const quote = await newQuote();
 
     expect(remoteTestQuotes).toContainEqual({
-      quoteAuthor: quote.author, quoteText: quote.text
+      quoteAuthor: quote.author,
+      quoteText: quote.text,
     });
     expect(fired).toBe(1);
   });
@@ -44,7 +52,7 @@ describe('quote generator', () => {
     const newQuote = getQuoteGenerator();
     const quotesSeen = new Set();
     for (let attempt = 0; attempt < MANY_TRIES; ++attempt) {
-      if (quotesSeen.size == remoteTestQuotes.length) quotesSeen.clear();
+      if (quotesSeen.size === remoteTestQuotes.length) quotesSeen.clear();
       const generatedQuote = await newQuote();
       expect(quotesSeen).not.toContainEqual(generatedQuote);
       quotesSeen.add(generatedQuote);
@@ -53,7 +61,7 @@ describe('quote generator', () => {
 });
 
 describe('quote to aristocrat cipher', () => {
-  const testCases = ramTestQuotes.map(q => [q, toAristocratCipher(q)]);
+  const testCases = ramTestQuotes.map((q) => [q, toAristocratCipher(q)]);
   const forEach = (quote, cipher, cb) => {
     for (let i = 0; i < quote.text.length; ++i) {
       cb(quote.text[i].toUpperCase(), cipher.ciphertext[i]);
@@ -70,7 +78,7 @@ describe('quote to aristocrat cipher', () => {
     const replacements = new Map(); // cipher -> replacment
     forEach(quote, cipher, (quoteC, cipherC) => {
       if (alphabet.includes(quoteC)) {
-        const newReplacement = (replacements.get(quoteC) ?? new Set());
+        const newReplacement = replacements.get(quoteC) ?? new Set();
         newReplacement.add(cipherC);
         replacements.set(quoteC, newReplacement);
         expect(newReplacement.size).toBe(1);
@@ -79,11 +87,14 @@ describe('quote to aristocrat cipher', () => {
     expect(replacements.size).toBeGreaterThan(1); // make sure test code works
   });
 
-  it.each(testCases)('does not decode any letter to itself', (quote, cipher) => {
-    forEach(quote, cipher, (quoteC, cipherC) => {
-      if (alphabet.includes(quoteC)) {
-        expect(quoteC).not.toEqual(cipherC);
-      }
-    });
-  });
+  it.each(testCases)(
+    'does not decode any letter to itself',
+    (quote, cipher) => {
+      forEach(quote, cipher, (quoteC, cipherC) => {
+        if (alphabet.includes(quoteC)) {
+          expect(quoteC).not.toEqual(cipherC);
+        }
+      });
+    }
+  );
 });

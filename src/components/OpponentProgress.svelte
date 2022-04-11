@@ -1,5 +1,9 @@
 <script>
-  import { users as u, gameProblem as gp, timeTakenByOpponents as to } from '@/js/store.js';
+  import {
+    users as u,
+    gameProblem as gp,
+    timeTakenByOpponents as to,
+  } from '@/js/store.js';
   import { fmtTime } from '@/js/utils.js';
   import { getEmptyProgress } from '@/js/cryptoduelutils.js';
 
@@ -19,7 +23,7 @@
     >
       <p>{user.name}:</p>
       <div class="opponent-progress">
-        {#each (user.progress ?? emptyProgress) as hasFilled}
+        {#each user.progress ?? emptyProgress as hasFilled}
           <div class="progress-item" class:has-done={hasFilled} />
         {/each}
       </div>
@@ -28,7 +32,8 @@
 </div>
 
 <style>
-  .opponent-progress-container, .user-container {
+  .opponent-progress-container,
+  .user-container {
     display: flex;
     flex-direction: column;
   }
@@ -55,7 +60,8 @@
     background-color: var(--green);
   }
 
-  .opponent-progress::before, .opponent-progress::after {
+  .opponent-progress::before,
+  .opponent-progress::after {
     transition: 500ms ease-out;
     transform-origin: left;
   }

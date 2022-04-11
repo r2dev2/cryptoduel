@@ -6,12 +6,17 @@
   import { confettiCelebration } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
-  import { NameChooser, JoinLink, CryptogramSolver, OpponentProgress } from '@/components';
+  import {
+    NameChooser,
+    JoinLink,
+    CryptogramSolver,
+    OpponentProgress,
+  } from '@/components';
 
   const getNewQuote = getQuoteGenerator();
 
   const newProblem = () => {
-    getNewQuote().then(quote => gameProblem.set(toAristocratCipher(quote)));
+    getNewQuote().then((quote) => gameProblem.set(toAristocratCipher(quote)));
   };
 
   $: log('users:', $users);
@@ -36,14 +41,12 @@
     <OpponentProgress />
     <CryptogramSolver
       problem={$gameProblem}
-      on:progress={e => progress.set(e.detail.progress)}
+      on:progress={(e) => progress.set(e.detail.progress)}
       on:solved={() => solved.set(true)}
     />
   {/if}
   {#if isHivemindBrain}
-    <button on:click={newProblem}>
-      New Problem
-    </button>
+    <button on:click={newProblem}> New Problem </button>
   {/if}
 </main>
 
