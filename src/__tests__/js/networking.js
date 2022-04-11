@@ -182,6 +182,19 @@ describe('networking as a node', () => {
 
       expect(get(stores.users)).toEqual([server]);
     });
+
+    it('clears its own progress and solved when hivemind starts new game', () => {
+      stores.progress.set(testProgress.map(_ => true));
+      stores.solved.set(true);
+
+      networking.onData(testId2)({
+        type: Messages.NEW_PROBLEM,
+        problem: { ...testProblem },
+      });
+
+      expect(get(stores.progress)).toEqual(null);
+      expect(get(stores.solved)).toEqual(false);
+    });
   });
 });
 

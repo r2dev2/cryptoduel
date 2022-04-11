@@ -162,12 +162,14 @@ const subscriptions = [
   }),
   gameProblem.subscribe(($problem) => {
     if ($problem === null) return;
+
+    progress.set(null);
+    solved.set(false);
+
     if (isHivemindBrain) {
       users.update((us) =>
         us.map((u) => ({ ...u, progress: null, solved: false }))
       );
-      progress.set(null);
-      solved.set(false);
       emit({
         type: Messages.NEW_PROBLEM,
         problem: $problem,
