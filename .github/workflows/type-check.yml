@@ -1,4 +1,4 @@
-name: Test
+name: Type Check
 
 on:
   push:
@@ -16,4 +16,4 @@ jobs:
         run: yarn
 
       - name: Run tests
-        run: yarn test
+        run: yarn type:check
