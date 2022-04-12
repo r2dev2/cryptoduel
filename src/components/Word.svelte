@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { alphabet } from '@/js/quotes.js';
+  import { getDuplicates } from '@/js/utils.js';
 
   export let word = '';
   export let replacement = Array(26).fill('');
@@ -27,12 +28,15 @@
 
   // null if char is not alphabetic, '' if no replacement, char if replacement
   $: replacedChars = replaceChars(word, replacement);
+  $: duplicateReplacements = getDuplicates(replacement);
 </script>
 
 <div class="word">
   {#each word as ch, i}
     {@const replacement = replacedChars[i]}
-    <div class="plain-encrypt-pair">
+    {@const duplicate =
+      replacement !== '' && duplicateReplacements.has(replacement)}
+    <div class="plain-encrypt-pair" class:duplicate>
       <div class="cipher-letter">{ch}</div>
       <div
         class="decrypted-letter"
@@ -80,5 +84,9 @@
 
   .non-alphabetic {
     display: none !important;
+  }
+
+  .duplicate {
+    background-color: var(--red);
   }
 </style>

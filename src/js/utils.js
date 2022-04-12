@@ -16,3 +16,23 @@ export const fmtTime = (ms) => {
 
 /** @type {(ms: number) => Promise<void>} */
 export const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+
+/**
+ * @template T
+ * @param {Array<T>} arr
+ * @returns {Set<T>}
+ */
+export const getDuplicates = (arr) => {
+  const duplicates = new Set();
+  /** @type {typeof duplicates} */
+  const visited = new Set();
+
+  for (const entry of arr) {
+    if (visited.has(entry)) {
+      duplicates.add(entry);
+    }
+    visited.add(entry);
+  }
+
+  return duplicates;
+};

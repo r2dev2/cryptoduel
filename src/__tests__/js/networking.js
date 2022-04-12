@@ -184,7 +184,7 @@ describe('networking as a node', () => {
     });
 
     it('clears its own progress and solved when hivemind starts new game', () => {
-      stores.progress.set(testProgress.map(_ => true));
+      stores.progress.set(testProgress.map((_) => true));
       stores.solved.set(true);
 
       networking.onData(testId2)({

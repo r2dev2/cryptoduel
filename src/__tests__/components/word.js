@@ -5,12 +5,19 @@ import userEvent from '@testing-library/user-event';
 import { Word } from '@/components';
 
 const testWord = "DON'T";
+
 const testReplacement = Array(26).fill('');
 testReplacement[14] = 'X'; // o -> x
 testReplacement[19] = 'B'; // t -> b
 
+// a replacement array in which both n and o decode to x
+const testDuplicateReplacement = [...testReplacement];
+testDuplicateReplacement[13] = 'X'; // n -> x
+
 const getDecrypted = (el) =>
   el.parentElement.querySelector('.decrypted-letter');
+
+const getPair = (el) => el.parentElement;
 
 describe('<Word />', () => {
   it('displays all letters of the word', () => {
@@ -73,5 +80,17 @@ describe('<Word />', () => {
     userEvent.type(getDecrypted(getByText('N')), 'E');
 
     expect(cb).not.toHaveBeenCalled();
+  });
+
+  it('marks duplicate replacements', () => {
+    const { getByText } = render(Word, {
+      word: testWord,
+      replacement: testDuplicateReplacement,
+    });
+
+    const [o, n, t] = ['O', 'N', 'T'].map(getByText).map(getPair);
+    expect(o).toHaveClass('duplicate');
+    expect(n).toHaveClass('duplicate');
+    expect(t).not.toHaveClass('duplicate');
   });
 });
