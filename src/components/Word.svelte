@@ -41,6 +41,7 @@
       <div
         class="decrypted-letter"
         class:non-alphabetic={replacement === null}
+        class:empty={replacement === ''}
         tabindex="0"
         on:keydown={keyDown(i)}
       >
@@ -88,5 +89,14 @@
 
   .duplicate {
     background-color: var(--red);
+  }
+
+  .empty::before {
+    content: '-';
+    color: var(--grey);
+  }
+
+  .empty:focus::before {
+    color: white;
   }
 </style>

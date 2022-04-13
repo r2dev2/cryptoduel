@@ -93,4 +93,17 @@ describe('<Word />', () => {
     expect(n).toHaveClass('duplicate');
     expect(t).not.toHaveClass('duplicate');
   });
+
+  it('identifies for each letter when there is no replacement', () => {
+    const { getByText } = render(Word, {
+      word: testWord,
+      replacement: testReplacement,
+    });
+
+    const [d, o, n, t] = ['D', 'O', 'N', 'T'].map(getByText).map(getDecrypted);
+    expect(d).toHaveClass('empty');
+    expect(o).not.toHaveClass('empty');
+    expect(n).toHaveClass('empty');
+    expect(t).not.toHaveClass('empty');
+  });
 });

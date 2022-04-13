@@ -84,6 +84,7 @@
     --yellow: #ffeb3b;
     --green: #4caf50;
     --red: #f44336;
+    --grey: #cccccc;
     --hovered-letter-color: var(--yellow);
     --selected-letter-color: var(--amber);
     --solved-text-color: var(--green);
