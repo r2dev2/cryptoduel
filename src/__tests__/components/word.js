@@ -106,4 +106,21 @@ describe('<Word />', () => {
     expect(n).toHaveClass('empty');
     expect(t).not.toHaveClass('empty');
   });
+
+  it('prohibits typing the same letter as a replacement', () => {
+    const { getByText, component } = render(Word, {
+      word: testWord,
+      replacement: testReplacement,
+    });
+
+    const cb = jest.fn();
+    const errcb = jest.fn();
+
+    component.$on('replace', cb);
+    component.$on('error', errcb);
+    userEvent.type(getDecrypted(getByText('N')), 'N');
+
+    expect(cb).not.toHaveBeenCalled();
+    expect(errcb).toHaveBeenCalled();
+  });
 });

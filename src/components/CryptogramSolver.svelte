@@ -61,6 +61,7 @@
         {replacement}
         disabled={solved}
         on:replace={(e) => replace(e.detail)}
+        on:error
       />
     {/each}
   </div>

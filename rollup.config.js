@@ -6,6 +6,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import alias from '@rollup/plugin-alias';
 import hmr from 'rollup-plugin-hot';
+import css from 'rollup-plugin-css-only';
 
 // Set this to true to pass the --single flag to sirv (this serves your
 // index.html for any unmatched route, which is a requirement for SPA
@@ -65,6 +66,9 @@ export default {
     file: 'public/build/bundle.js',
   },
   plugins: [
+    css({
+      output: 'extra.css'
+    }),
     svelte({
       // enable run-time checks when not in production
       dev: !isProduction,
@@ -108,7 +112,10 @@ export default {
     }),
 
     alias({
-      entries: [{ find: '@', replacement: __dirname + '/src' }],
+      entries: [
+        { find: '@', replacement: __dirname + '/src' },
+        { find: 'sweetalert2', replacement: __dirname + '/node_modules/sweetalert2/dist/sweetalert2.js' },
+      ],
     }),
 
     // In dev mode, call `npm run start` once

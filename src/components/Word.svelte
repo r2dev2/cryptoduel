@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import { alphabet } from '@/js/quotes.js';
   import { getDuplicates } from '@/js/utils.js';
+  import { Errors } from '@/js/constants.js';
 
   export let word = '';
   export let replacement = Array(26).fill('');
@@ -12,6 +13,14 @@
   /** @type {(i: number) => (e: KeyboardEvent) => void} */
   const keyDown = (i) => (e) => {
     if (disabled) return;
+    if (word[i] === e.key.toUpperCase()) {
+      dispatch('error', {
+        id: Errors.NO_SELF_DECODE,
+        msg: 'Letters cannot decode to themselves',
+      });
+      return;
+    }
+
     dispatch('replace', {
       from: word[i],
       to: e.key.toUpperCase(),

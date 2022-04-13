@@ -13,3 +13,10 @@ export const Messages = {
 
 export const hivemindBrain = new URLSearchParams(location.search).get('game');
 export const isHivemindBrain = hivemindBrain === null;
+
+/** @enum {string} */
+export const Errors = {
+  NO_SELF_DECODE: 'no-self-decode',
+};
+
+/** @typedef {{ id: Errors, msg: string }} Error */

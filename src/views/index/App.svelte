@@ -3,7 +3,7 @@
   import { connectTo } from '@/js/networking.js';
   import { gameProblem, users, progress, solved } from '@/js/store.js';
   import { hivemindBrain, isHivemindBrain } from '@/js/constants.js';
-  import { confettiCelebration } from '@/js/actions.js';
+  import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
   import {
@@ -43,6 +43,7 @@
       problem={$gameProblem}
       on:progress={(e) => progress.set(e.detail.progress)}
       on:solved={() => solved.set(true)}
+      on:error={(e) => showError(e.detail)}
     />
   {/if}
   {#if isHivemindBrain}
