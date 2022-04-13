@@ -19,4 +19,6 @@ export const Errors = {
   NO_SELF_DECODE: 'no-self-decode',
 };
 
+export const noshow = 'dontshow';
+
 /** @typedef {{ id: Errors, msg: string }} Error */
