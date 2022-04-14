@@ -9,9 +9,13 @@ export const fmtTime = (ms) => {
   const hours = padTime(ms / 60000 / 60);
   const minutes = padTime((ms / 60000) % 60);
   const seconds = padTime((ms % 60000) / 1000);
-  const res =
-    hours !== '00' ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
-  return res.replace(/^0+/g, '');
+  if (hours !== '00') {
+    return `${hours}:${minutes}:${seconds}`.replace(/^0+/g, '');
+  }
+  if (minutes !== '00') {
+    return `${minutes}:${seconds}`.replace(/^0+/g, '');
+  }
+  return `00:${seconds}`;
 };
 
 /** @type {(ms: number) => Promise<void>} */
