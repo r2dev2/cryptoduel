@@ -11,6 +11,7 @@
     JoinLink,
     CryptogramSolver,
     OpponentProgress,
+    Lobby,
   } from '@/components';
 
   const getNewQuote = getQuoteGenerator();
@@ -36,6 +37,7 @@
   {/if}
 
   <NameChooser />
+  <Lobby />
 
   {#if $gameProblem}
     <OpponentProgress />

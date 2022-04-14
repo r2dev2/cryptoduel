@@ -108,6 +108,7 @@ export default {
       preventAssignment: true,
       values: {
         'process.env.PRODUCTION': isProduction,
+        'process.env.NODE_ENV': isProduction ? "'production'" : "'development'"
       },
     }),
 
