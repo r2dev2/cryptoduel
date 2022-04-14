@@ -40,3 +40,10 @@ export const getDuplicates = (arr) => {
 
   return duplicates;
 };
+
+/**
+ * @template T
+ * @param {Array<T>} arr
+ * @returns {T}
+ */
+export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];

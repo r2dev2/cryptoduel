@@ -1,3 +1,5 @@
+/** @typedef {{ id: Errors, msg: string }} Error */
+
 export const external = {
   // @ts-ignore
   Peer: window.Peer,
@@ -19,6 +21,24 @@ export const Errors = {
   NO_SELF_DECODE: 'no-self-decode',
 };
 
+// random strings to keep track of
 export const noshow = 'dontshow';
 
-/** @typedef {{ id: Errors, msg: string }} Error */
+export const congratulationTitles = [
+  'Congratulations!',
+  "Let's gooo",
+  'I knew you could do it',
+  'What a speedy boi',
+  'Sheeesh',
+  "Are you sonic, cause you're fast",
+  'You faster than me with your mom',
+  'Zoom zoom',
+  'Vroom vroom',
+  'You just broke the sound barrier',
+  "Are you 30k mph, cause you're faster than escape velocity",
+  'Too smart, too fast',
+  'ZHOOOOOM',
+  'Haha cryptogram go brrr',
+  "I'm proud of you",
+  'Most speedy cryptonerd',
+];

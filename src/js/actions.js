@@ -1,6 +1,15 @@
+import { get } from 'svelte/store';
+
 import ConfettiGenerator from 'js-confetti';
 import Swal from 'sweetalert2';
+import {
+  getCongratulationsMessage,
+  getCongratulationsTitle,
+} from './cryptoduelutils.js';
 import { noshow } from './constants.js';
+import { problemStart } from './store.js';
+
+/** @typedef {import('./constants.js').Error} Error */
 
 /** @type {any | undefined} */
 let confetti;
@@ -14,10 +23,14 @@ setTimeout(() => {
 window.$cryptoduel$confetti = confetti;
 
 export const confettiCelebration = () => {
+  Swal.fire({
+    title: getCongratulationsTitle(),
+    text: getCongratulationsMessage(Date.now() - get(problemStart)),
+    icon: 'success',
+  });
+
   confetti.addConfetti();
 };
-
-/** @typedef {import('./constants.js').Error} Error */
 
 const getErrLocalstorageKey = (/** @type {Error} */ err) =>
   `show-err-${err.id}`;
