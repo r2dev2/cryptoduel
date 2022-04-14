@@ -9,6 +9,8 @@
   <span>Lobby:</span>
   {#each $users as user}
     <UserBubble name={user.name} />
+  {:else}
+    <span>waiting for some cool cryptographers</span>
   {/each}
 </div>
 

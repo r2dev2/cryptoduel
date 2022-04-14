@@ -2,10 +2,10 @@
   import { AvatarBeam } from 'svelte-boring-avatars';
 
   export let name = '';
-  export let size = 36;
+  export let size = 16;
 </script>
 
-<div class="user-bubble" title={name}>
+<div class="user-bubble" title={name} style="--size: {size}px;">
   <AvatarBeam
     {size}
     {name}
@@ -15,6 +15,7 @@
 
 <style>
   .user-bubble {
-    width: max-content;
+    width: var(--size);
+    height: var(--size);
   }
 </style>

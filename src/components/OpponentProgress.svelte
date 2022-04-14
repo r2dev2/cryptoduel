@@ -6,6 +6,7 @@
   } from '@/js/store.js';
   import { fmtTime } from '@/js/utils.js';
   import { getEmptyProgress } from '@/js/cryptoduelutils.js';
+  import UserBubble from './UserBubble.svelte';
 
   export let users = u;
   export let gameProblem = gp;
@@ -23,7 +24,7 @@
         $timeTakenByOpponents.get(user.id) ?? 0
       )})';"
     >
-      <p>{user.name}:</p>
+      <UserBubble name={user.name} />
       <div class="opponent-progress">
         {#each user.progress ?? emptyProgress as hasFilled}
           <div class="progress-item" class:has-done={hasFilled} />
@@ -38,6 +39,10 @@
   .user-container {
     display: flex;
     flex-direction: column;
+  }
+
+  .user-container {
+    gap: 0.25rem;
   }
 
   .opponent-progress-container {
