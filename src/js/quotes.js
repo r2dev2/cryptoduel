@@ -1,4 +1,6 @@
 import { amountChunks } from './meta.js';
+import { alphabet } from './constants.js';
+export { alphabet } from './constants.js';
 
 /** @typedef {{ author: string, text: string }} Quote */
 /** @typedef {Quote & { plaintext: string, ciphertext: string }} EncryptedQuote */
@@ -22,8 +24,6 @@ export const getQuoteGenerator = () => {
 
   return newQuote;
 };
-
-export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 /**
  * @template T

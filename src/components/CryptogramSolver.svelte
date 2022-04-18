@@ -4,6 +4,7 @@
   import { log } from '@/js/utils.js';
 
   import Word from './Word.svelte';
+  import ReplacementTable from './ReplacementTable.svelte';
 
   /** @typedef {import('@/js/quotes.js').EncryptedQuote} EncryptedQuote */
 
@@ -38,6 +39,9 @@
       (ch) => alphabet.includes(ch) && replacement[alphabet.indexOf(ch)] !== ''
     );
 
+  /** @type {(e: CustomEvent<any>) => void} */
+  const handleReplace = (e) => replace(e.detail);
+
   $: problem, (replacement = Array(26).fill(''));
 
   $: words = splitQuote(problem?.ciphertext ?? '');
@@ -60,11 +64,16 @@
         {word}
         {replacement}
         disabled={solved}
-        on:replace={(e) => replace(e.detail)}
+        on:replace={handleReplace}
         on:error
       />
     {/each}
   </div>
+  <ReplacementTable
+    {replacement}
+    quote={problem.ciphertext}
+    on:replace={handleReplace}
+  />
 {/if}
 
 <style>

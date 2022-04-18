@@ -21,6 +21,8 @@ export const Errors = {
   NO_SELF_DECODE: 'no-self-decode',
 };
 
+export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 // random strings to keep track of
 export const noshow = 'dontshow';
 

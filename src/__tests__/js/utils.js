@@ -1,4 +1,4 @@
-import { fmtTime, getDuplicates } from '@/js/utils.js';
+import { fmtTime, getDuplicates, getCounts } from '@/js/utils.js';
 
 describe('formatting time', () => {
   it.each([
@@ -19,5 +19,22 @@ describe('getting duplicates', () => {
     [['a', 'b', 'b', 'c'], new Set(['b'])],
   ])('finds duplicates of %s', (arr, duplicates) => {
     expect(getDuplicates(arr)).toEqual(duplicates);
+  });
+});
+
+describe('getting counts', () => {
+  it.each([
+    [
+      'hello',
+      new Map([
+        ['h', 1],
+        ['e', 1],
+        ['l', 2],
+        ['o', 1],
+      ]),
+    ],
+    ['', new Map()],
+  ])('counts items in %s', (sentence, correctCounts) => {
+    expect(getCounts(sentence)).toEqual(correctCounts);
   });
 });

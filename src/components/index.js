@@ -4,3 +4,4 @@ export { default as Word } from './Word.svelte';
 export { default as JoinLink } from './JoinLink.svelte';
 export { default as OpponentProgress } from './OpponentProgress.svelte';
 export { default as Lobby } from './Lobby.svelte';
+export { default as ReplacementTable } from './ReplacementTable.svelte';

@@ -47,3 +47,16 @@ export const getDuplicates = (arr) => {
  * @returns {T}
  */
 export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+/**
+ * @template T
+ * @param {Iterable<T>} it
+ * @returns {Map<T, number>}
+ */
+export const getCounts = (it) => {
+  const count = new Map();
+  for (const item of it) {
+    count.set(item, (count.has(item) ? count.get(item) : 0) + 1);
+  }
+  return count;
+};

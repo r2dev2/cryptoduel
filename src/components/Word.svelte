@@ -2,30 +2,13 @@
   import { createEventDispatcher } from 'svelte';
   import { alphabet } from '@/js/quotes.js';
   import { getDuplicates } from '@/js/utils.js';
-  import { Errors } from '@/js/constants.js';
+  import { replaceableElement } from '@/js/use.js';
 
   export let word = '';
   export let replacement = Array(26).fill('');
   export let disabled = false;
 
   const dispatch = createEventDispatcher();
-
-  /** @type {(i: number) => (e: KeyboardEvent) => void} */
-  const keyDown = (i) => (e) => {
-    if (disabled) return;
-    if (word[i] === e.key.toUpperCase()) {
-      dispatch('error', {
-        id: Errors.NO_SELF_DECODE,
-        msg: 'Letters cannot decode to themselves',
-      });
-      return;
-    }
-
-    dispatch('replace', {
-      from: word[i],
-      to: e.key.toUpperCase(),
-    });
-  };
 
   /** @type {(word: string, replacement: string[]) => Array<string | null>} */
   const replaceChars = (word, replacement) =>
@@ -52,7 +35,7 @@
         class:non-alphabetic={replacement === null}
         class:empty={replacement === ''}
         tabindex="0"
-        on:keydown={keyDown(i)}
+        use:replaceableElement={{ ogchar: word[i], disabled, dispatch }}
       >
         <pre>{replacement}</pre>
       </div>
