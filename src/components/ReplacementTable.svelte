@@ -15,15 +15,22 @@
 
 <table class="replacement-table">
   {#each alphabet as ch, i}
+    {@const replacementId = `replacement-${i}`}
+    {@const isInQuote = frequencies.has(ch)}
     <tr>
-      <td>{ch}</td>
-      <td>{frequencies.has(ch) ? frequencies.get(ch) : 0}</td>
+      <td id={replacementId}>{ch}</td>
+      <td>{isInQuote ? frequencies.get(ch) : 0}</td>
       <td
+        role="textbox"
+        aria-labelledby={replacementId}
+        aria-disabled={!isInQuote}
         class="replacement-letter"
-        tabindex="0"
+        class:no-occurence={!isInQuote}
+        tabindex={isInQuote ? 0 : -1}
         use:replaceableElement={{ ogchar: ch, disabled, dispatch }}
-        >{replacement[i]}</td
       >
+        {replacement[i]}
+      </td>
     </tr>
   {/each}
 </table>
@@ -67,5 +74,9 @@
 
   .replacement-letter:focus {
     background-color: var(--selected-letter-color);
+  }
+
+  .no-occurence {
+    pointer-events: none;
   }
 </style>

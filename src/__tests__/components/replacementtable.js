@@ -35,7 +35,9 @@ describe('<ReplacementTable />', () => {
   });
 
   it('dispatches a change letter event on replace', () => {
-    const { getByText, component } = render(ReplacementTable);
+    const { getByText, component } = render(ReplacementTable, {
+      quote: 'NICE',
+    });
 
     let fired = 0;
 
