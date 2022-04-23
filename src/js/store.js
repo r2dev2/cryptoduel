@@ -1,4 +1,5 @@
 import { derived, get, writable } from 'svelte/store';
+import { firstlaunch } from './constants.js';
 
 /** @typedef {import('./quotes.js').EncryptedQuote} EncryptedQuote */
 
@@ -27,6 +28,10 @@ export const hivemindConnection = writable(
 );
 export const progress = writable([null, [true]][0]);
 export const solved = writable(false);
+export const isFirstLaunch = writable(
+  window.localStorage.getItem(firstlaunch) === null
+);
+
 /** @type {Map<string, Connection>} */
 export const connections = new Map(); // id -> connection
 

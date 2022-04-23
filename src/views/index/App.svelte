@@ -1,7 +1,13 @@
 <script>
   import { getQuoteGenerator, toAristocratCipher } from '@/js/quotes.js';
   import { connectTo } from '@/js/networking.js';
-  import { gameProblem, users, progress, solved } from '@/js/store.js';
+  import {
+    gameProblem,
+    isFirstLaunch,
+    users,
+    progress,
+    solved,
+  } from '@/js/store.js';
   import { hivemindBrain, isHivemindBrain } from '@/js/constants.js';
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
@@ -12,6 +18,7 @@
     CryptogramSolver,
     OpponentProgress,
     Lobby,
+    FirstLaunchPrompt,
   } from '@/components';
 
   const getNewQuote = getQuoteGenerator();
@@ -36,6 +43,9 @@
     {/await}
   {/if}
 
+  {#if $isFirstLaunch}
+    <FirstLaunchPrompt />
+  {/if}
   <NameChooser />
   <Lobby />
 
@@ -58,6 +68,10 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  :global(body) {
+    overflow-x: hidden;
   }
 
   button:focus {
@@ -83,11 +97,13 @@
   }
 
   :root {
+    --light-blue: #03a9f4;
     --amber: #ffc107;
     --yellow: #ffeb3b;
     --green: #4caf50;
     --red: #f44336;
     --grey: #cccccc;
+    --primary-color: var(--light-blue);
     --hovered-letter-color: var(--yellow);
     --selected-letter-color: var(--amber);
     --solved-text-color: var(--green);

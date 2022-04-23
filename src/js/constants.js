@@ -25,6 +25,7 @@ export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 // random strings to keep track of
 export const noshow = 'dontshow';
+export const firstlaunch = 'has-launched';
 
 export const congratulationTitles = [
   'Congratulations!',
@@ -33,7 +34,7 @@ export const congratulationTitles = [
   'What a speedy boi',
   'Sheeesh',
   "Are you sonic, cause you're fast",
-  'You faster than me with your mom',
+  'You faster than an MIT boy',
   'Zoom zoom',
   'Vroom vroom',
   'You just broke the sound barrier',
