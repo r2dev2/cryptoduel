@@ -3,6 +3,7 @@
 
 <div class="container">
   <h1>Welcome to <span class="cryptoduel"><i>Cryptoduel</i></span></h1>
+  <img alt="cryptogram logo" src="./cryptoduel-logo.svg" width="200" />
   <p>
     A cryptogram is a quote which has been encrypted by substituting each letter
     with another letter.
@@ -32,6 +33,7 @@
     display: block;
     font-size: 4rem;
     animation: pulse 1.4s ease-in-out alternate infinite;
+    margin-bottom: 1rem;
   }
 
   @keyframes pulse {
