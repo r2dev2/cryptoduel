@@ -73,6 +73,7 @@
     {replacement}
     quote={problem.ciphertext}
     on:replace={handleReplace}
+    on:error
   />
 {/if}
 
