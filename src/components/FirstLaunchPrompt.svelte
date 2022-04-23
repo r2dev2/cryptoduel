@@ -5,13 +5,14 @@
   <h1>Welcome to <span class="cryptoduel"><i>Cryptoduel</i></span></h1>
   <img alt="cryptogram logo" src="./cryptoduel-logo.svg" width="200" />
   <p>
-    A cryptogram is a quote which has been encrypted by substituting each letter
+    An aristocrat cryptogram is a quote encrypted by substituting each letter
     with another letter.
   </p>
   <p>
     In cryptoduel, you compete with friends to see who can decrypt the quote the
     fastest!
   </p>
+  <button class="play-button"> Play </button>
 </div>
 
 <style>
@@ -36,9 +37,66 @@
     margin-bottom: 1rem;
   }
 
+  .play-button {
+    --vibrate-dist: 0.25rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 6rem;
+    text-transform: uppercase;
+    transform: translateX(0);
+    transition: 100ms ease-out;
+  }
+
+  .play-button:hover {
+    animation: vibrate 100ms ease-in-out alternate infinite;
+  }
+
+  .play-button:active {
+    position: relative;
+    background-color: var(--primary-color);
+    filter: brightness(70%);
+    animation: rotate-quarter 100ms ease-out;
+    transform: rotate(90deg);
+  }
+
+  .play-button:active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999999;
+    background-color: var(--primary-color);
+    width: 0.5rem;
+    height: 2rem;
+    animation: bullet-left 100ms linear 100ms;
+  }
+
   @keyframes pulse {
     to {
       transform: scale(var(--expansion-factor));
+    }
+  }
+
+  @keyframes vibrate {
+    from {
+      transform: translateX(calc(0 - var(--vibrate-dist)));
+    }
+
+    to {
+      transform: translateX(var(--vibrate-dist));
+    }
+  }
+
+  @keyframes rotate-quarter {
+    to {
+      transform: rotate(90deg);
+    }
+  }
+
+  @keyframes bullet-left {
+    to {
+      transform: translateY(100vw);
     }
   }
 </style>
