@@ -77,7 +77,7 @@
 
   .panel-content {
     --main-props-transition: height var(--expansion-transition),
-      padding var(--expansion-transition);
+      padding var(--expansion-transition), filter var(--expansion-transition);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -88,6 +88,7 @@
     animation: fly-from-left var(--fly-in-duration) var(--one-bounce-spring);
     transform-origin: top center;
     transform: scaleY(0);
+    filter: opacity(0);
     transition: var(--main-props-transition), transform 0ms ease-out;
   }
 
@@ -95,6 +96,7 @@
     height: unset;
     padding: 0.75rem 0.75rem;
     transform: scaleY(1);
+    filter: opacity(1);
     transition: var(--expansion-transition);
   }
 
