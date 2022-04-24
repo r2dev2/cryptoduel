@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { noop } from 'svelte/internal';
 import { render } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 
@@ -77,7 +78,12 @@ describe('<Word />', () => {
     const cb = jest.fn();
 
     component.$on('replace', cb);
+
+    // I don't like the red text lmao
+    const x = console.error;
+    console.error = noop;
     userEvent.type(getDecrypted(getByText('N')), 'E');
+    console.error = x;
 
     expect(cb).not.toHaveBeenCalled();
   });

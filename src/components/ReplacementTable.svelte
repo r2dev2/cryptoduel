@@ -8,9 +8,9 @@
   export let quote = '';
   export let disabled = false;
 
-  $: frequencies = getCounts(quote);
-
   const dispatch = createEventDispatcher();
+
+  $: frequencies = getCounts(quote);
 </script>
 
 <table class="replacement-table">
@@ -26,7 +26,6 @@
         aria-disabled={!isInQuote}
         class="replacement-letter"
         class:no-occurence={!isInQuote}
-        tabindex={isInQuote ? 0 : -1}
         use:replaceableElement={{ ogchar: ch, disabled, dispatch }}
       >
         {replacement[i]}

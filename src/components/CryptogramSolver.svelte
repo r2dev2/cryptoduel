@@ -72,6 +72,7 @@
   <ReplacementTable
     {replacement}
     quote={problem.ciphertext}
+    disabled={solved}
     on:replace={handleReplace}
     on:error
   />
