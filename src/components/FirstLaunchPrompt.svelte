@@ -1,7 +1,11 @@
 <script>
+  let exiting = false;
+  const gotoGame = () => {
+    exiting = true;
+  };
 </script>
 
-<div class="container">
+<div class="container" class:exiting>
   <h1>Welcome to <span class="cryptoduel"><i>Cryptoduel</i></span></h1>
   <img alt="cryptogram logo" src="./cryptoduel-logo.svg" width="200" />
   <p>
@@ -12,11 +16,13 @@
     In cryptoduel, you compete with friends to see who can decrypt the quote the
     fastest!
   </p>
-  <button class="play-button"> Play </button>
+  <button class="play-button" on:click={gotoGame}>Play</button>
 </div>
 
 <style>
   .container {
+    --spin-duration: 100ms;
+    --bullet-launch-duration: 700ms;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -26,6 +32,12 @@
     background-color: white;
     transform: translate(-50%, -50%);
     text-align: center;
+    transition: var(--bullet-launch-duration) linear;
+    transition-delay: var(--spin-duration);
+  }
+
+  .exiting.container {
+    transform: translate(calc(100vw - 50%), -50%);
   }
 
   h1 {
@@ -56,20 +68,27 @@
     position: relative;
     background-color: var(--primary-color);
     filter: brightness(70%);
-    animation: rotate-quarter 100ms ease-out;
+    animation: rotate-quarter var(--spin-duration) ease-out;
     transform: rotate(90deg);
   }
 
-  .play-button:active::before {
+  .exiting .play-button {
+    transform: rotate(90deg);
+    animation: none;
+  }
+
+  .exiting .play-button::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     z-index: 9999999;
     background-color: var(--primary-color);
-    width: 0.5rem;
+    width: 1rem;
     height: 2rem;
-    animation: bullet-left 100ms linear 100ms;
+    border-radius: 0 0 50% 50%;
+    animation: bullet-left var(--bullet-launch-duration) linear
+      var(--spin-duration);
   }
 
   @keyframes pulse {
@@ -96,7 +115,7 @@
 
   @keyframes bullet-left {
     to {
-      transform: translateY(100vw);
+      transform: translateY(200vw);
     }
   }
 </style>
