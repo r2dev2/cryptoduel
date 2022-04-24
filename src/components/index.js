@@ -6,3 +6,4 @@ export { default as OpponentProgress } from './OpponentProgress.svelte';
 export { default as Lobby } from './Lobby.svelte';
 export { default as ReplacementTable } from './ReplacementTable.svelte';
 export { default as FirstLaunchPrompt } from './FirstLaunchPrompt.svelte';
+export { default as Game } from './Game.svelte';

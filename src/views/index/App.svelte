@@ -12,14 +12,15 @@
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
-  import {
-    NameChooser,
-    JoinLink,
-    CryptogramSolver,
-    OpponentProgress,
-    Lobby,
-    FirstLaunchPrompt,
-  } from '@/components';
+  import { Game } from '@/components';
+  // import {
+  //   NameChooser,
+  //   JoinLink,
+  //   CryptogramSolver,
+  //   OpponentProgress,
+  //   Lobby,
+  //   FirstLaunchPrompt,
+  // } from '@/components';
 
   const getNewQuote = getQuoteGenerator();
 
@@ -33,6 +34,8 @@
 
 <canvas id="confetti" />
 <main>
+  <Game />
+  <!--
   {#if isHivemindBrain}
     <JoinLink />
   {:else}
@@ -46,6 +49,7 @@
   {#if $isFirstLaunch}
     <FirstLaunchPrompt />
   {/if}
+
   <NameChooser />
   <Lobby />
 
@@ -61,6 +65,7 @@
   {#if isHivemindBrain}
     <button on:click={newProblem}> New Problem </button>
   {/if}
+  -->
 </main>
 
 <style>
