@@ -1,14 +1,5 @@
 <script>
-  import { getQuoteGenerator, toAristocratCipher } from '@/js/quotes.js';
-  import { connectTo } from '@/js/networking.js';
-  import {
-    gameProblem,
-    isFirstLaunch,
-    users,
-    progress,
-    solved,
-  } from '@/js/store.js';
-  import { hivemindBrain, isHivemindBrain } from '@/js/constants.js';
+  import { users, solved } from '@/js/store.js';
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
@@ -22,19 +13,14 @@
   //   FirstLaunchPrompt,
   // } from '@/components';
 
-  const getNewQuote = getQuoteGenerator();
-
-  const newProblem = () => {
-    getNewQuote().then((quote) => gameProblem.set(toAristocratCipher(quote)));
-  };
-
   $: log('users:', $users);
   $: if ($solved) confettiCelebration();
 </script>
 
 <canvas id="confetti" />
 <main>
-  <Game />
+  <Game on:error={(e) => showError(e.detail)} />
+
   <!--
   {#if isHivemindBrain}
     <JoinLink />
@@ -77,10 +63,6 @@
 
   :global(body) {
     overflow-x: hidden;
-  }
-
-  button:focus {
-    border: 1px solid #ccc;
   }
 
   :global(button:hover) {
