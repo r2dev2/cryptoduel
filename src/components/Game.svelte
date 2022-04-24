@@ -7,14 +7,22 @@
   import Panel from './Panel.svelte';
 
   import { getQuoteGenerator, toAristocratCipher } from '@/js/quotes.js';
-  import { isHivemindBrain } from '@/js/constants.js';
-  import { progress, gameProblem, solved, users } from '@/js/store.js';
+  import { isHivemindBrain, hivemindBrain } from '@/js/constants.js';
+  import {
+    progress,
+    gameProblem,
+    solved,
+    users,
+    hivemindConnection,
+  } from '@/js/store.js';
 
   const getNewQuote = getQuoteGenerator();
 
   const newProblem = () => {
     getNewQuote().then((quote) => gameProblem.set(toAristocratCipher(quote)));
   };
+
+  $: connectingToHivemind = !isHivemindBrain && $hivemindConnection === null;
 </script>
 
 <div class="game">
@@ -26,27 +34,35 @@
       <JoinLink />
     </Panel>
   </div>
-  <Panel>
-    <Lobby />
-  </Panel>
-  {#if $users.length > 0}
+  {#if connectingToHivemind}
+    <Panel>
+      Connecting to {hivemindBrain ?? ''}
+    </Panel>
+  {:else if $users.length > 0}
+    <Panel>
+      <Lobby />
+    </Panel>
+  {/if}
+  {#if $users.length > 0 && $gameProblem}
     <Panel>
       <OpponentProgress />
     </Panel>
   {/if}
-  <Panel>
-    {#if $gameProblem}
-      <CryptogramSolver
-        problem={$gameProblem}
-        on:progress={(e) => progress.set(e.detail.progress)}
-        on:solved={() => solved.set(true)}
-        on:error
-      />
-    {/if}
-    {#if isHivemindBrain}
-      <button on:click={newProblem}>New Problem</button>
-    {/if}
-  </Panel>
+  {#if $gameProblem || isHivemindBrain}
+    <Panel>
+      {#if $gameProblem}
+        <CryptogramSolver
+          problem={$gameProblem}
+          on:progress={(e) => progress.set(e.detail.progress)}
+          on:solved={() => solved.set(true)}
+          on:error
+        />
+      {/if}
+      {#if isHivemindBrain}
+        <button on:click={newProblem}>New Problem</button>
+      {/if}
+    </Panel>
+  {/if}
 </div>
 
 <style>

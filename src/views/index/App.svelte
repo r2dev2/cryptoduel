@@ -1,4 +1,5 @@
 <script>
+  import '@/js/networking.js';
   import { users, solved } from '@/js/store.js';
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';

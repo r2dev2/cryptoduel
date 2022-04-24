@@ -1,5 +1,6 @@
 <script>
   import { id as id_ } from '@/js/store.js';
+  import { getJoinLink } from '@/js/cryptoduelutils.js';
 
   export let id = id_;
 
@@ -10,7 +11,7 @@
     clicked = true;
   };
 
-  $: joinLink = `${location.href}?game=${encodeURIComponent($id)}`;
+  $: joinLink = getJoinLink($id);
 </script>
 
 <div class="join-links">

@@ -64,7 +64,7 @@
   }
 
   .progress-item.has-done {
-    background-color: var(--green);
+    background-color: var(--primary-color);
   }
 
   .opponent-progress::before,

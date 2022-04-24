@@ -134,7 +134,12 @@ export const connectTo = (otherId) =>
     });
   });
 
-peer.on('open', id.set);
+peer.on('open', (/** @type {string} */ $id) => {
+  id.set($id);
+  if (!isHivemindBrain && hivemindBrain !== null) {
+    connectTo(hivemindBrain);
+  }
+});
 peer.on('connection', openConnection);
 
 const subscriptions = [
