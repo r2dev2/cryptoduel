@@ -45,6 +45,8 @@
   }
 
   .exiting.container {
+    background-color: transparent;
+    filter: opacity(0);
     transform: translate(calc(100vw - 50%), -50%);
   }
 
