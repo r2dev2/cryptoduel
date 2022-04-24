@@ -2,16 +2,22 @@
   // panel inspired by bugzilla panels
   // reference: https://bugzilla.mozilla.org/show_bug.cgi?id=956573
 
+  import { writable as lswritable } from 'svelte-local-storage-store';
+
   export let style = '';
   export let flyInMs = 300;
   export let title = '';
-  export let expanded = true;
+  export let closed = false;
+
+  const expanded = lswritable(`panel-${title}`, !closed);
+
+  $: closed = !$expanded;
 
   $: style_ = `${style} --fly-in-duration: ${flyInMs}ms`;
 </script>
 
-<div class="panel" class:expanded style={style_}>
-  <div class="panel-title" on:click={() => (expanded = !expanded)}>
+<div class="panel" class:expanded={$expanded} style={style_}>
+  <div class="panel-title" on:click={() => expanded.update((e) => !e)}>
     <span class="dropdown-arrow" />
     <span class="title-text">{title}</span>
   </div>
