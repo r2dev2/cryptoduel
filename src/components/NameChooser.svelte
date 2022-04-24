@@ -3,10 +3,11 @@
 
   export let gameProblem = gp;
   export let name = n;
+  export let label = 'Username';
 </script>
 
 <div class="name-chooser">
-  <label for="username">Username</label>
+  <label for="username">{label}</label>
   <input
     type="text"
     id="username"

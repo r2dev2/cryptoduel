@@ -1,8 +1,14 @@
 <script>
+  import { onMount } from 'svelte';
+  import { name } from '@/js/store.js';
+  import NameChooser from './NameChooser.svelte';
+
   let exiting = false;
   const gotoGame = () => {
     exiting = true;
   };
+
+  onMount(() => name.update((n) => n)); // make it persist in localstorage
 </script>
 
 <div class="container" class:exiting>
@@ -16,7 +22,8 @@
     In cryptoduel, you compete with friends to see who can decrypt the quote the
     fastest!
   </p>
-  <button class="play-button" on:click={gotoGame}>Play</button>
+  <NameChooser label="Choose your cryptographer alias" />
+  <button tabindex="0" class="play-button" on:click={gotoGame}>Play</button>
 </div>
 
 <style>
@@ -40,6 +47,10 @@
     transform: translate(calc(100vw - 50%), -50%);
   }
 
+  .container :global(.name-chooser) {
+    margin-top: 1.5rem;
+  }
+
   h1 {
     --expansion-factor: 1.05;
     position: relative;
@@ -55,6 +66,7 @@
     color: white;
     border: none;
     width: 6rem;
+    margin-top: 1.5rem;
     text-transform: uppercase;
     transform: translateX(0);
     transition: 100ms ease-out;
@@ -64,7 +76,7 @@
     animation: vibrate 100ms ease-in-out alternate infinite;
   }
 
-  .play-button:active {
+  .play-button:focus {
     position: relative;
     background-color: var(--primary-color);
     filter: brightness(70%);

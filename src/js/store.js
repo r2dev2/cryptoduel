@@ -1,4 +1,5 @@
 import { derived, get, writable } from 'svelte/store';
+import { writable as lswritable } from 'svelte-local-storage-store';
 import { firstlaunch } from './constants.js';
 
 /** @typedef {import('./quotes.js').EncryptedQuote} EncryptedQuote */
@@ -22,15 +23,16 @@ export const id = writable('');
 export const gameProblem = writable(
   /** @type {EncryptedQuote | null} */ (null)
 );
-export const name = writable(`person-${Math.floor(Math.random() * 10000)}`);
+export const name = lswritable(
+  'name',
+  `person-${Math.floor(Math.random() * 10000)}`
+);
 export const hivemindConnection = writable(
   /** @type {Connection | null} */ (null)
 );
 export const progress = writable([null, [true]][0]);
 export const solved = writable(false);
-export const isFirstLaunch = writable(
-  window.localStorage.getItem(firstlaunch) === null
-);
+export const isFirstLaunch = lswritable(firstlaunch, true);
 
 /** @type {Map<string, Connection>} */
 export const connections = new Map(); // id -> connection
