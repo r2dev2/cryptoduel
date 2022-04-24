@@ -91,9 +91,12 @@
     --green: #4caf50;
     --red: #f44336;
     --grey: #cccccc;
+    --light-grey: #f0f1f2;
     --primary-color: var(--light-blue);
     --hovered-letter-color: var(--yellow);
     --selected-letter-color: var(--amber);
     --solved-text-color: var(--green);
+    --panel-title-bg-color: var(--light-grey);
+    --panel-title-color: #505152;
   }
 </style>

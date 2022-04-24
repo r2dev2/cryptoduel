@@ -27,29 +27,29 @@
 
 <div class="game">
   <div class="row">
-    <Panel>
+    <Panel title="Settings">
       <NameChooser />
     </Panel>
-    <Panel style="flex-grow: 3;">
+    <Panel title="Join Info" style="flex-grow: 3;">
       <JoinLink />
     </Panel>
   </div>
   {#if connectingToHivemind}
-    <Panel>
+    <Panel title="Connecting...">
       Connecting to {hivemindBrain ?? ''}
     </Panel>
   {:else if $users.length > 0}
-    <Panel>
+    <Panel title="Lobby">
       <Lobby />
     </Panel>
   {/if}
   {#if $users.length > 0 && $gameProblem}
-    <Panel>
+    <Panel title="Progress">
       <OpponentProgress />
     </Panel>
   {/if}
   {#if $gameProblem || isHivemindBrain}
-    <Panel>
+    <Panel title="Game">
       {#if $gameProblem}
         <CryptogramSolver
           problem={$gameProblem}
