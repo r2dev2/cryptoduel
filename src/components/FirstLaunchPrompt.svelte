@@ -1,11 +1,12 @@
 <script>
   import { onMount } from 'svelte';
-  import { name } from '@/js/store.js';
+  import { name, isFirstLaunch } from '@/js/store.js';
   import NameChooser from './NameChooser.svelte';
 
   let exiting = false;
   const gotoGame = () => {
     exiting = true;
+    setTimeout(() => isFirstLaunch.set(false), 2000);
   };
 
   onMount(() => name.update((n) => n)); // make it persist in localstorage
