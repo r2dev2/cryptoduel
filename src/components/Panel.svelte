@@ -23,7 +23,8 @@
 <style>
   .panel {
     --one-bounce-spring: cubic-bezier(0.31, 0.65, 0.36, 1.18);
-    --expansion-transition: 300ms ease-out;
+    --expansion-transition-duration: 300ms;
+    --expansion-transition: var(--expansion-transition-duration) ease-out;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -69,22 +70,26 @@
   }
 
   .panel-content {
+    --main-props-transition: height var(--expansion-transition),
+      padding var(--expansion-transition);
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
     gap: 1rem;
-    padding: 0 1.5rem;
+    padding: 0 0.75rem;
     height: 0;
     animation: fly-from-left var(--fly-in-duration) var(--one-bounce-spring);
+    transform-origin: top center;
     transform: scaleY(0);
-    transition: var(--expansion-transition);
+    transition: var(--main-props-transition), transform 0ms ease-out;
   }
 
   .expanded .panel-content {
     height: unset;
-    padding: 1.5rem 1.5rem;
+    padding: 0.75rem 0.75rem;
     transform: scaleY(1);
+    transition: var(--expansion-transition);
   }
 
   @keyframes fly-from-left {
