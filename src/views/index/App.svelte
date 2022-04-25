@@ -1,10 +1,10 @@
 <script>
   import '@/js/networking.js';
-  import { users, solved } from '@/js/store.js';
+  import { isFirstLaunch, users, solved } from '@/js/store.js';
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
-  import { Game } from '@/components';
+  import { FirstLaunchPrompt, Game } from '@/components';
   // import {
   //   NameChooser,
   //   JoinLink,
@@ -20,7 +20,11 @@
 
 <canvas id="confetti" />
 <main>
-  <Game on:error={(e) => showError(e.detail)} />
+  {#if $isFirstLaunch}
+    <FirstLaunchPrompt />
+  {:else}
+    <Game on:error={(e) => showError(e.detail)} />
+  {/if}
 
   <!--
   {#if isHivemindBrain}

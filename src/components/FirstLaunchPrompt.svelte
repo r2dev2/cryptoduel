@@ -6,7 +6,7 @@
   let exiting = false;
   const gotoGame = () => {
     exiting = true;
-    setTimeout(() => isFirstLaunch.set(false), 2000);
+    setTimeout(() => isFirstLaunch.set(false), 700);
   };
 
   onMount(() => name.update((n) => n)); // make it persist in localstorage
