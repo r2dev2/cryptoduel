@@ -5,14 +5,6 @@
   import { log } from '@/js/utils.js';
 
   import { FirstLaunchPrompt, Game } from '@/components';
-  // import {
-  //   NameChooser,
-  //   JoinLink,
-  //   CryptogramSolver,
-  //   OpponentProgress,
-  //   Lobby,
-  //   FirstLaunchPrompt,
-  // } from '@/components';
 
   $: log('users:', $users);
   $: if ($solved) confettiCelebration();
@@ -25,38 +17,6 @@
   {:else}
     <Game on:error={(e) => showError(e.detail)} />
   {/if}
-
-  <!--
-  {#if isHivemindBrain}
-    <JoinLink />
-  {:else}
-    {#await connectTo(hivemindBrain ?? '')}
-      <p>Connecting to {hivemindBrain}</p>
-    {:then _}
-      <p>Successfully connected to {hivemindBrain}</p>
-    {/await}
-  {/if}
-
-  {#if $isFirstLaunch}
-    <FirstLaunchPrompt />
-  {/if}
-
-  <NameChooser />
-  <Lobby />
-
-  {#if $gameProblem}
-    <OpponentProgress />
-    <CryptogramSolver
-      problem={$gameProblem}
-      on:progress={(e) => progress.set(e.detail.progress)}
-      on:solved={() => solved.set(true)}
-      on:error={(e) => showError(e.detail)}
-    />
-  {/if}
-  {#if isHivemindBrain}
-    <button on:click={newProblem}> New Problem </button>
-  {/if}
-  -->
 </main>
 
 <style>
