@@ -124,10 +124,14 @@
 
   @keyframes bullet-left {
     0% {
+      transform: rotate(0);
+    }
+
+    5% {
       transform: rotate(-20deg);
     }
 
-    to {
+    100% {
       transform: rotate(-20deg) translateX(-200vw);
     }
   }
