@@ -1,15 +1,34 @@
 <script>
   import { onMount } from 'svelte';
+  import { writable } from 'svelte/store';
   import { name, isFirstLaunch } from '@/js/store.js';
   import NameChooser from './NameChooser.svelte';
 
+  const handleHasExtended = writable(false);
+  let focussedOnButton = false;
   let exiting = false;
+  let extendHandleId = -1;
+
+  /* TODO working on making gun animation a handle */
   const gotoGame = () => {
-    exiting = true;
-    setTimeout(() => isFirstLaunch.set(false), 700);
+    const unsub = handleHasExtended.subscribe((extended) => {
+      if (!extended) return;
+      exiting = true;
+      setTimeout(() => isFirstLaunch.set(false), 500);
+      setTimeout(() => unsub());
+    });
   };
 
   onMount(() => name.update((n) => n)); // make it persist in localstorage
+
+  $: if (focussedOnButton) {
+    clearTimeout(extendHandleId);
+    handleHasExtended.set(false);
+    extendHandleId = setTimeout(
+      () => handleHasExtended.set(focussedOnButton),
+      200
+    );
+  }
 </script>
 
 <div class="container" class:exiting>
@@ -24,12 +43,20 @@
     fastest!
   </p>
   <NameChooser label="Choose your cryptographer alias" />
-  <button tabindex="0" class="play-button" on:click={gotoGame}>Play</button>
+  <button
+    tabindex="0"
+    class="play-button"
+    on:click={gotoGame}
+    on:focus={() => (focussedOnButton = true)}
+    on:blur={() => (focussedOnButton = false)}
+  >
+    Play
+  </button>
 </div>
 
 <style>
   .container {
-    --spin-duration: 100ms;
+    --extend-gun-duration: 100ms;
     --bullet-launch-duration: 700ms;
     position: absolute;
     top: 50%;
@@ -41,7 +68,6 @@
     transform: translate(-50%, -50%);
     text-align: center;
     transition: var(--bullet-launch-duration) linear;
-    transition-delay: var(--spin-duration);
   }
 
   .exiting.container {
@@ -83,15 +109,30 @@
     position: relative;
     background-color: var(--primary-color);
     filter: brightness(70%);
-    animation: rotate-quarter var(--spin-duration) ease-out;
-    transform: rotate(90deg);
-  }
-
-  .exiting .play-button {
-    transform: rotate(90deg);
+    /* animation: rotate-quarter var(--spin-duration) ease-out; */
     animation: none;
   }
 
+  .exiting .play-button {
+    transform: rotate(20deg);
+    animation: none;
+  }
+
+  /* ::after is the gun handle */
+  .play-button:focus::after {
+    content: '';
+    position: absolute;
+    top: 1.5rem;
+    right: 0.5rem;
+    background-color: var(--primary-color);
+    width: 1.5rem;
+    height: 2.5rem;
+    transform-origin: top center;
+    transform: rotate(-10deg);
+    animation: extend-gun var(--extend-gun-duration) ease-out;
+  }
+
+  /* ::before is the bullet */
   .exiting .play-button::before {
     content: '';
     position: absolute;
@@ -99,11 +140,10 @@
     left: 0;
     z-index: 9999999;
     background-color: var(--primary-color);
-    width: 1rem;
-    height: 2rem;
-    border-radius: 0 0 50% 50%;
-    animation: bullet-left var(--bullet-launch-duration) linear
-      var(--spin-duration);
+    width: 2rem;
+    height: 1rem;
+    border-radius: 50% 0 0% 50%;
+    animation: bullet-left var(--bullet-launch-duration);
   }
 
   @keyframes pulse {
@@ -128,9 +168,25 @@
     }
   }
 
-  @keyframes bullet-left {
+  @keyframes extend-gun {
+    from {
+      transform-origin: top center;
+      transform: scaleY(0) rotate(-10deg);
+    }
+
     to {
-      transform: translateY(200vw);
+      transform-origin: top center;
+      transform: scaleY(1) rotate(-10deg);
+    }
+  }
+
+  @keyframes bullet-left {
+    0% {
+      transform: rotate(-20deg);
+    }
+
+    to {
+      transform: rotate(-20deg) translateX(-200vw);
     }
   }
 </style>
