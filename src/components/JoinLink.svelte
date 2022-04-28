@@ -37,8 +37,4 @@
   .join-link:hover {
     cursor: pointer;
   }
-
-  .join-link:focus {
-    border: 1px solid #ccc;
-  }
 </style>

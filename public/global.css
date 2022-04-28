@@ -1,3 +1,12 @@
+:root {
+	--border-radius: 3px;
+	/* yoinked from https://vuetifyjs.com/en/styles/elevation/#usage */
+	--elevation-1: 0 2px 1px -1px rgba(0,0,0,.2),
+			0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
+	--elevation-2: 0 3px 1px -2px rgba(0,0,0,0.2),
+      0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
 html, body {
 	position: relative;
 	width: 100%;
@@ -37,13 +46,14 @@ input, button, select, textarea {
 	margin: 0 0 0.5em 0;
 	box-sizing: border-box;
 	border: 1px solid #ccc;
-	border-radius: 2px;
+	border-radius: var(--border-radius);
 }
 
 input:disabled {
 	color: #ccc;
 }
 
+/* Svelte's default
 button {
 	color: #333;
 	background-color: #f4f4f4;
@@ -61,4 +71,28 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+*/
 
+button {
+	border: none;
+	color: #505152;
+	background-color: #f4f4f4;
+	outline: none;
+	box-shadow: var(--elevation-1);
+	transition: 200ms ease-out;
+}
+
+button:hover {
+	filter: brightness(90%);
+}
+
+button:not(:disabled):active {
+	box-shadow: none;
+	outline: none;
+	transform: translate(1px, 2px);
+}
+
+button:focus {
+	border: none;
+	outline: none;
+}

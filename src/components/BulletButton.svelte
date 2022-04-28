@@ -81,6 +81,7 @@
     background-color: var(--primary-color);
     width: 1.5rem;
     height: 2.5rem;
+    border-radius: var(--border-radius);
     transform-origin: top center;
     transform: rotate(-10deg);
     animation: extend-gun var(--extend-gun-duration) ease-out;
