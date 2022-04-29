@@ -44,6 +44,7 @@
     "js-confetti": "^0.10.2",
     "sirv-cli": "^1.0.0",
     "svelte-boring-avatars": "^1.2.2",
+    "svelte-local-storage-store": "^0.2.6",
     "sweetalert2": "^11.4.8"
   },
   "scripts": {

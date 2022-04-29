@@ -34,7 +34,6 @@
         class="decrypted-letter"
         class:non-alphabetic={replacement === null}
         class:empty={replacement === ''}
-        tabindex="0"
         use:replaceableElement={{ ogchar: word[i], disabled, dispatch }}
       >
         <pre>{replacement}</pre>

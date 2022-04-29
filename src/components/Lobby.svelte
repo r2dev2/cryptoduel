@@ -6,7 +6,6 @@
 </script>
 
 <div class="lobby">
-  <span>Lobby:</span>
   {#each $users as user}
     <UserBubble name={user.name} />
   {:else}

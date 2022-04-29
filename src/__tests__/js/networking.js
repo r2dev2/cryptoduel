@@ -111,7 +111,6 @@ describe('networking as a node', () => {
   });
 
   const openConnection = () => {
-    networking.connectTo(testId2);
     const { stream } = peerConnections[0];
     stream.set({ etype: 'open', edata: null });
     sleep(1000);

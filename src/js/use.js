@@ -23,6 +23,16 @@ export const replaceableElement = (node, options_ = {}) => {
   });
   const { dispatch } = options;
 
+  const setProperties = () => {
+    node.style.setProperty(
+      'pointer-events',
+      options.disabled ? 'none' : 'auto'
+    );
+    node.setAttribute('tabindex', options.disabled ? '-1' : '0');
+  };
+
+  setProperties();
+
   /** @type {(e: KeyboardEvent) => void} */
   const onKeyDown = (e) => {
     if (options.disabled) return;
@@ -45,6 +55,7 @@ export const replaceableElement = (node, options_ = {}) => {
   return {
     update(newOptions) {
       options = { ...options, ...newOptions };
+      setProperties();
     },
 
     destroy() {

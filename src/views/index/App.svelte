@@ -1,24 +1,10 @@
 <script>
-  import { getQuoteGenerator, toAristocratCipher } from '@/js/quotes.js';
-  import { connectTo } from '@/js/networking.js';
-  import { gameProblem, users, progress, solved } from '@/js/store.js';
-  import { hivemindBrain, isHivemindBrain } from '@/js/constants.js';
+  import '@/js/networking.js';
+  import { isFirstLaunch, users, solved } from '@/js/store.js';
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
-  import {
-    NameChooser,
-    JoinLink,
-    CryptogramSolver,
-    OpponentProgress,
-    Lobby,
-  } from '@/components';
-
-  const getNewQuote = getQuoteGenerator();
-
-  const newProblem = () => {
-    getNewQuote().then((quote) => gameProblem.set(toAristocratCipher(quote)));
-  };
+  import { FirstLaunchPrompt, Game } from '@/components';
 
   $: log('users:', $users);
   $: if ($solved) confettiCelebration();
@@ -26,30 +12,10 @@
 
 <canvas id="confetti" />
 <main>
-  {#if isHivemindBrain}
-    <JoinLink />
+  {#if $isFirstLaunch}
+    <FirstLaunchPrompt />
   {:else}
-    {#await connectTo(hivemindBrain ?? '')}
-      <p>Connecting to {hivemindBrain}</p>
-    {:then _}
-      <p>Successfully connected to {hivemindBrain}</p>
-    {/await}
-  {/if}
-
-  <NameChooser />
-  <Lobby />
-
-  {#if $gameProblem}
-    <OpponentProgress />
-    <CryptogramSolver
-      problem={$gameProblem}
-      on:progress={(e) => progress.set(e.detail.progress)}
-      on:solved={() => solved.set(true)}
-      on:error={(e) => showError(e.detail)}
-    />
-  {/if}
-  {#if isHivemindBrain}
-    <button on:click={newProblem}> New Problem </button>
+    <Game on:error={(e) => showError(e.detail)} />
   {/if}
 </main>
 
@@ -60,8 +26,8 @@
     gap: 1rem;
   }
 
-  button:focus {
-    border: 1px solid #ccc;
+  :global(body) {
+    overflow-x: hidden;
   }
 
   :global(button:hover) {
@@ -83,13 +49,18 @@
   }
 
   :root {
+    --light-blue: #03a9f4;
     --amber: #ffc107;
     --yellow: #ffeb3b;
     --green: #4caf50;
     --red: #f44336;
     --grey: #cccccc;
+    --light-grey: #f0f1f2;
+    --primary-color: var(--light-blue);
     --hovered-letter-color: var(--yellow);
     --selected-letter-color: var(--amber);
     --solved-text-color: var(--green);
+    --panel-title-bg-color: var(--light-grey);
+    --panel-title-color: #505152;
   }
 </style>

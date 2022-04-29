@@ -3,7 +3,7 @@
  */
 
 import { choose, fmtTime } from './utils.js';
-import { congratulationTitles } from './constants.js';
+import { congratulationTitles, isHivemindBrain } from './constants.js';
 
 /** @typedef {import('./quotes.js').EncryptedQuote} EncryptedQuote */
 
@@ -18,3 +18,9 @@ export const getCongratulationsMessage = (timeTaken) => {
 
 /** @type {() => string} */
 export const getCongratulationsTitle = () => choose(congratulationTitles);
+
+/** @type {(id: string) => string} */
+export const getJoinLink = (id) =>
+  isHivemindBrain
+    ? `${window.location.href}?game=${encodeURIComponent(id)}`
+    : window.location.href;
