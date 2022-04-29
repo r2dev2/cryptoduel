@@ -27,11 +27,11 @@
 
 <div class="game">
   <div class="row">
+    <Panel title="Join Info">
+      <JoinLink />
+    </Panel>
     <Panel title="Settings">
       <NameChooser />
-    </Panel>
-    <Panel title="Join Info" style="flex-grow: 3;">
-      <JoinLink />
     </Panel>
   </div>
   {#if connectingToHivemind}

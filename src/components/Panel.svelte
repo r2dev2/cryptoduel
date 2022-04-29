@@ -34,7 +34,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex-grow: 1;
+    flex: 1 0 min-content;
     border-radius: var(--border-radius);
     box-shadow: var(--elevation-2);
     transition: var(--expansion-transition);
