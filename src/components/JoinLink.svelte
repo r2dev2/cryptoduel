@@ -15,10 +15,14 @@
 </script>
 
 <div class="join-links">
-  <button class="join-link" on:click={onClick}>
-    {clicked ? 'Join Link (copied)' : 'Copy Join Link'}
-  </button>
-  <a href={joinLink}>{joinLink}</a>
+  {#if $id !== ''}
+    <button class="join-link" on:click={onClick}>
+      {clicked ? 'Join Link (copied)' : 'Copy Join Link'}
+    </button>
+    <a href={joinLink}>{joinLink}</a>
+  {:else}
+    <p class="waiting">Acquiring join link...</p>
+  {/if}
 </div>
 
 <style>
