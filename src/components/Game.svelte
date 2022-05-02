@@ -1,4 +1,5 @@
 <script>
+  import HelpInfo from './HelpInfo.svelte';
   import NameChooser from './NameChooser.svelte';
   import OpponentProgress from './OpponentProgress.svelte';
   import CryptogramSolver from './CryptogramSolver.svelte';
@@ -34,6 +35,9 @@
       <NameChooser />
     </Panel>
   </div>
+  <Panel title="Help" closed>
+    <HelpInfo />
+  </Panel>
   {#if connectingToHivemind}
     <Panel title="Connecting...">
       Connecting to {hivemindBrain ?? ''}

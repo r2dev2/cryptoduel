@@ -44,4 +44,6 @@ export const congratulationTitles = [
   'Haha cryptogram go brrr',
   "I'm proud of you",
   'Most speedy cryptonerd',
+  'I *c* you',
+  "Deja vu, although I've never seen such speed before",
 ];

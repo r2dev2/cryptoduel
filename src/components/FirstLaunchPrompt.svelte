@@ -3,6 +3,7 @@
   import { name } from '@/js/store.js';
   import NameChooser from './NameChooser.svelte';
   import BulletButton from './BulletButton.svelte';
+  import HelpInfo from './HelpInfo.svelte';
 
   let exiting = false;
 
@@ -12,14 +13,7 @@
 <div class="container" class:exiting>
   <h1>Welcome to <span class="cryptoduel"><i>Cryptoduel</i></span></h1>
   <img alt="cryptogram logo" src="./cryptoduel-logo.svg" width="200" />
-  <p>
-    An aristocrat cryptogram is a quote encrypted by substituting each letter
-    with another letter.
-  </p>
-  <p>
-    In cryptoduel, you compete with friends to see who can decrypt the quote the
-    fastest!
-  </p>
+  <HelpInfo />
   <NameChooser label="Choose your cryptographer alias" />
   <BulletButton bind:exiting>Play</BulletButton>
 </div>
