@@ -3,7 +3,9 @@ import { alphabet } from './constants.js';
 export { alphabet } from './constants.js';
 
 /** @typedef {{ author: string, text: string }} Quote */
-/** @typedef {Quote & { plaintext: string, ciphertext: string }} EncryptedQuote */
+/** @typedef {Quote & {
+  plaintext: string, ciphertext: string, start: number
+}} EncryptedQuote */
 
 export const getQuoteGenerator = () => {
   let quoteIndex = 0;
@@ -51,7 +53,7 @@ export const toAristocratCipher = (quote) => {
     .map((char) => encryptionAlphabet[alphabet.indexOf(char)] ?? char)
     .join('');
 
-  return { ...quote, plaintext, ciphertext };
+  return { ...quote, plaintext, ciphertext, start: Date.now() };
 };
 
 /** @type {(text: string) => string[]} */

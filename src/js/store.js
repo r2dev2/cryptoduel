@@ -44,7 +44,10 @@ export const self = derived(
   }
 );
 
-export const problemStart = derived(gameProblem, () => Date.now());
+export const problemStart = derived(
+  gameProblem,
+  ($gp) => $gp?.start ?? Date.now()
+);
 
 /** @type {import('svelte/store').Readable<Map<string, number>>} */
 export const timeTakenByOpponents = derived(
