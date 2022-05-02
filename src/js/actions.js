@@ -27,6 +27,7 @@ export const confettiCelebration = () => {
     title: getCongratulationsTitle(),
     text: getCongratulationsMessage(Date.now() - get(problemStart)),
     icon: 'success',
+    confirmButtonColor: 'var(--primary-color)',
   });
 
   confetti.addConfetti();
@@ -47,6 +48,8 @@ export const showError = (
     icon: 'error',
     showDenyButton: true,
     denyButtonText: "Don't show this error message again",
+    confirmButtonColor: 'var(--primary-color)',
+    denyButtonColor: 'var(--red)',
   }).then((r) => {
     if (r.isDenied) {
       localStorage.setItem(errKey, noshow);
