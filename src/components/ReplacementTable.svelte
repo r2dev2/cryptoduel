@@ -79,8 +79,8 @@
   }
 
   .no-occurence {
-    background-color: #f5f5f5;
-    color: #4a4a4a;
+    background-color: var(--no-occurence-color);
+    color: var(--no-occurence-bg-color);
   }
 
   .no-occurence .replacement-letter {

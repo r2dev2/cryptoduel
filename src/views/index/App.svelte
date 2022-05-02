@@ -62,5 +62,7 @@
     --solved-text-color: var(--green);
     --panel-title-bg-color: var(--light-grey);
     --panel-title-color: #505152;
+    --no-occurence-color: #f5f5f5;
+    --no-occurence-bg-color: #4a4a4a;
   }
 </style>
