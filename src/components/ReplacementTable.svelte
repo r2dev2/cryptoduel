@@ -13,11 +13,11 @@
   $: frequencies = getCounts(quote);
 </script>
 
-<table class="replacement-table">
+<table class="replacement-table" class:disabled>
   {#each alphabet as ch, i}
     {@const replacementId = `replacement-${i}`}
     {@const isInQuote = frequencies.has(ch)}
-    <tr>
+    <tr class:no-occurence={!isInQuote}>
       <td id={replacementId}>{ch}</td>
       <td>{isInQuote ? frequencies.get(ch) : 0}</td>
       <td
@@ -25,8 +25,11 @@
         aria-labelledby={replacementId}
         aria-disabled={!isInQuote}
         class="replacement-letter"
-        class:no-occurence={!isInQuote}
-        use:replaceableElement={{ ogchar: ch, disabled, dispatch }}
+        use:replaceableElement={{
+          ogchar: ch,
+          disabled: disabled || !isInQuote,
+          dispatch,
+        }}
       >
         {replacement[i]}
       </td>
@@ -66,16 +69,21 @@
     height: 1.15rem;
   }
 
-  .replacement-letter:hover {
+  :not(.disabled) .replacement-letter:hover {
     cursor: text;
     background-color: var(--hovered-letter-color);
   }
 
-  .replacement-letter:focus {
+  :not(.disabled) .replacement-letter:focus {
     background-color: var(--selected-letter-color);
   }
 
   .no-occurence {
+    background-color: #f5f5f5;
+    color: #4a4a4a;
+  }
+
+  .no-occurence .replacement-letter {
     pointer-events: none;
   }
 </style>
