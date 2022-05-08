@@ -26,6 +26,9 @@ export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 // random strings to keep track of
 export const noshow = 'dontshow';
 export const firstlaunch = 'has-launched';
+export const cryptogramCharacterLabel = 'Cryptogram character';
+export const occurencesCharacterLabel = 'Occurences of character';
+export const replacementCharacterLabel = 'Replacement for character';
 
 export const congratulationTitles = [
   'Congratulations!',

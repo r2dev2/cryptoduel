@@ -35,8 +35,8 @@
       <NameChooser />
     </Panel>
   </div>
-  <Panel title="Help" closed>
-    <HelpInfo />
+  <Panel title="Help" dense closed>
+    <HelpInfo verbose />
   </Panel>
   {#if connectingToHivemind}
     <Panel title="Connecting...">

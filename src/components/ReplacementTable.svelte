@@ -1,6 +1,11 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { alphabet } from '@/js/constants.js';
+  import {
+    alphabet,
+    cryptogramCharacterLabel,
+    occurencesCharacterLabel,
+    replacementCharacterLabel,
+  } from '@/js/constants.js';
   import { replaceableElement } from '@/js/use.js';
   import { getCounts } from '@/js/utils.js';
 
@@ -14,6 +19,11 @@
 </script>
 
 <table class="replacement-table" class:disabled>
+  <tr class="header">
+    <td title={cryptogramCharacterLabel} class="from-label">-</td>
+    <td title={occurencesCharacterLabel} class="occurences-label">#</td>
+    <td title={replacementCharacterLabel} class="to-label">🠗</td>
+  </tr>
   {#each alphabet as ch, i}
     {@const replacementId = `replacement-${i}`}
     {@const isInQuote = frequencies.has(ch)}
@@ -65,7 +75,13 @@
     border-left: var(--border);
   }
 
-  .replacement-letter {
+  .header {
+    width: 1.25rem;
+    text-align: center;
+  }
+
+  .replacement-letter,
+  .to-label {
     height: 1.15rem;
   }
 

@@ -8,6 +8,7 @@
   export let flyInMs = 300;
   export let title = '';
   export let closed = false;
+  export let dense = false;
 
   const expanded = lswritable(`panel-${title}`, !closed);
 
@@ -16,7 +17,7 @@
   $: style_ = `${style} --fly-in-duration: ${flyInMs}ms`;
 </script>
 
-<div class="panel" class:expanded={$expanded} style={style_}>
+<div class="panel" class:expanded={$expanded} class:dense style={style_}>
   <div class="panel-title" on:click={() => expanded.update((e) => !e)}>
     <span class="dropdown-arrow" />
     <span class="title-text">{title}</span>
@@ -89,6 +90,10 @@
     transform: scaleY(0);
     filter: opacity(0);
     transition: var(--main-props-transition), transform 0ms ease-out;
+  }
+
+  .dense .panel-content {
+    gap: 0;
   }
 
   .expanded .panel-content {
