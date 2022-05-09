@@ -85,6 +85,10 @@
     height: 1.15rem;
   }
 
+  .replacement-letter {
+    caret-color: transparent;
+  }
+
   :not(.disabled) .replacement-letter:hover {
     cursor: text;
     background-color: var(--hovered-letter-color);

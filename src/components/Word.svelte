@@ -64,6 +64,10 @@
     height: 1.2rem;
   }
 
+  .decrypted-letter {
+    caret-color: transparent;
+  }
+
   .decrypted-letter:hover {
     cursor: pointer;
     background-color: var(--hovered-letter-color);

@@ -29,6 +29,7 @@ export const replaceableElement = (node, options_ = {}) => {
       options.disabled ? 'none' : 'auto'
     );
     node.setAttribute('tabindex', options.disabled ? '-1' : '0');
+    node.setAttribute('contenteditable', options.disabled ? 'false' : 'true');
   };
 
   setProperties();
@@ -36,6 +37,8 @@ export const replaceableElement = (node, options_ = {}) => {
   /** @type {(e: KeyboardEvent) => void} */
   const onKeyDown = (e) => {
     if (options.disabled) return;
+    e.preventDefault();
+
     if (options.ogchar === e.key.toUpperCase()) {
       dispatch('error', {
         id: Errors.NO_SELF_DECODE,
