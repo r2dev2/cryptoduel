@@ -3,6 +3,7 @@
   import { isFirstLaunch } from '@/js/store.js';
 
   export let exiting = false;
+  export let startingExit = false;
   export let handleExtensionWait = 200;
 
   const handleHasExtended = writable(false);
@@ -11,6 +12,11 @@
   let extendHandleId = -1;
 
   const gotoGame = () => {
+    startingExit = true;
+    if (!focussedOnButton) {
+      extendHandle(true);
+    }
+
     const unsub = handleHasExtended.subscribe((extended) => {
       if (!extended) return;
       exiting = true;
@@ -19,13 +25,16 @@
     });
   };
 
-  $: if (focussedOnButton) {
+  const extendHandle = (override = false) => {
     clearTimeout(extendHandleId);
     handleHasExtended.set(false);
-    extendHandleId = setTimeout(
-      () => handleHasExtended.set(focussedOnButton),
-      handleExtensionWait
-    );
+    extendHandleId = setTimeout(() => {
+      handleHasExtended.set(focussedOnButton || override);
+    }, handleExtensionWait);
+  };
+
+  $: if (focussedOnButton) {
+    extendHandle();
   }
 </script>
 
@@ -33,7 +42,9 @@
   tabindex="0"
   class="play-button"
   class:exiting
+  class:starting-exit={startingExit}
   on:click={gotoGame}
+  on:touchstart={gotoGame}
   on:focus={() => (focussedOnButton = true)}
   on:blur={() => (focussedOnButton = false)}
 >
@@ -55,7 +66,7 @@
     transition: 100ms ease-out;
   }
 
-  .play-button:hover {
+  .play-button:not(.starting-exit):hover {
     animation: vibrate 100ms ease-in-out alternate infinite;
   }
 
