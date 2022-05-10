@@ -37,7 +37,7 @@ export const replaceableElement = (node, options_ = {}) => {
   /** @type {(e: KeyboardEvent) => void} */
   const onKeyDown = (e) => {
     if (options.disabled) return;
-    e.preventDefault();
+    if (e.key !== 'Tab') e.preventDefault();
 
     if (options.ogchar === e.key.toUpperCase()) {
       dispatch('error', {
