@@ -37,6 +37,8 @@ export const replaceableElement = (node, options_ = {}) => {
   /** @type {(e: KeyboardEvent) => void} */
   const onKeyDown = (e) => {
     if (options.disabled) return;
+
+    // prevent the letters from being prepended to div on android
     node.setAttribute('contenteditable', 'false');
 
     if (options.ogchar === e.key.toUpperCase()) {
@@ -54,6 +56,7 @@ export const replaceableElement = (node, options_ = {}) => {
   };
 
   const onFocus = () => {
+    // it may have been set to false if it went through keydown before
     node.setAttribute('contenteditable', 'true');
   };
 
