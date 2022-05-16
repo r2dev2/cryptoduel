@@ -146,7 +146,8 @@ peer.on('error', (/** @type {any} */ e) => {
   Swal.fire({
     title: 'Connection error',
     text: `${e}`,
-    icon: 'error'
+    icon: 'error',
+    confirmButtonColor: 'var(--red)',
   });
 });
 
