@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { get } from 'svelte/store';
 import {
   connections,
@@ -141,6 +142,13 @@ peer.on('open', (/** @type {string} */ $id) => {
   }
 });
 peer.on('connection', openConnection);
+peer.on('error', (/** @type {any} */ e) => {
+  Swal.fire({
+    title: 'Connection error',
+    text: `${e}`,
+    icon: 'error'
+  });
+});
 
 const subscriptions = [
   users.subscribe(($users) => {
