@@ -37,7 +37,7 @@ export const replaceableElement = (node, options_ = {}) => {
   /** @type {(e: KeyboardEvent) => void} */
   const onKeyDown = (e) => {
     if (options.disabled) return;
-    if (e.key !== 'Tab') e.preventDefault();
+    node.setAttribute('contenteditable', 'false');
 
     if (options.ogchar === e.key.toUpperCase()) {
       dispatch('error', {
@@ -53,7 +53,12 @@ export const replaceableElement = (node, options_ = {}) => {
     });
   };
 
+  const onFocus = () => {
+    node.setAttribute('contenteditable', 'true');
+  };
+
   node.addEventListener('keydown', onKeyDown);
+  node.addEventListener('focus', onFocus);
 
   return {
     update(newOptions) {
@@ -63,6 +68,7 @@ export const replaceableElement = (node, options_ = {}) => {
 
     destroy() {
       node.removeEventListener('keydown', onKeyDown);
+      node.removeEventListener('focus', onFocus);
     },
   };
 };
