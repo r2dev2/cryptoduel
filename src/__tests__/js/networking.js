@@ -6,6 +6,7 @@ import * as Constants from '@/js/constants.js';
 const listeners = new Map([
   ['open', []],
   ['connection', []],
+  ['error', []],
 ]);
 const peerConnections = [];
 const messagesTo = [];
