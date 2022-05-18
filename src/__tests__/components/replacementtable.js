@@ -13,8 +13,8 @@ testReplacement[19] = 'B'; // t -> b
 const testDuplicateReplacement = [...testReplacement];
 testDuplicateReplacement[13] = 'X'; // n -> x
 
-const getDecrypted = (el) =>
-  el.parentElement.querySelector('.replacement-letter');
+const getDecryptedInput = (el) =>
+  el.parentElement.querySelector('.decrypted-letter input');
 
 describe('<ReplacementTable />', () => {
   it('displays all letters of the alphabet', () => {
@@ -30,8 +30,8 @@ describe('<ReplacementTable />', () => {
       replacement: testReplacement,
     });
 
-    expect(getDecrypted(getByText('O')).textContent).toEqual('X');
-    expect(getDecrypted(getByText('T')).textContent).toEqual('B');
+    expect(getDecryptedInput(getByText('O')).value).toEqual('X');
+    expect(getDecryptedInput(getByText('T')).value).toEqual('B');
   });
 
   it('dispatches a change letter event on replace', () => {
@@ -47,7 +47,7 @@ describe('<ReplacementTable />', () => {
       fired++;
     });
 
-    userEvent.type(getDecrypted(getByText('N')), 'E');
+    userEvent.type(getDecryptedInput(getByText('N')), 'E');
 
     expect(fired).toBe(1);
   });

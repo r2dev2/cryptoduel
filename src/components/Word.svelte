@@ -2,7 +2,8 @@
   import { createEventDispatcher } from 'svelte';
   import { alphabet } from '@/js/quotes.js';
   import { getDuplicates } from '@/js/utils.js';
-  import { replaceableElement } from '@/js/use.js';
+
+  import ReplacementCharacter from './ReplacementCharacter.svelte';
 
   export let word = '';
   export let replacement = Array(26).fill('');
@@ -30,14 +31,13 @@
       replacement !== '' && duplicateReplacements.has(replacement)}
     <div class="plain-encrypt-pair" class:duplicate>
       <div class="cipher-letter">{ch}</div>
-      <div
-        class="decrypted-letter"
-        class:non-alphabetic={replacement === null}
-        class:empty={replacement === ''}
-        use:replaceableElement={{ ogchar: word[i], disabled, dispatch }}
-      >
-        <pre>{replacement}</pre>
-      </div>
+      <ReplacementCharacter
+        {replacement}
+        {disabled}
+        ogchar={word[i]}
+        on:error
+        on:replace
+      />
     </div>
   {/each}
 </div>
@@ -55,43 +55,19 @@
     max-width: 1.5rem;
     width: 1rem;
     gap: 0.25rem;
+    position: relative;
   }
 
-  .plain-encrypt-pair div {
+  .cipher-letter {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 1.2rem;
-  }
-
-  .decrypted-letter {
-    caret-color: transparent;
-  }
-
-  .decrypted-letter:hover {
-    cursor: pointer;
-    background-color: var(--hovered-letter-color);
-  }
-
-  .decrypted-letter:focus {
-    background-color: var(--selected-letter-color);
-    outline: none;
-  }
-
-  .non-alphabetic {
-    display: none !important;
+    padding: 0;
+    width: 1rem;
   }
 
   .duplicate {
     background-color: var(--red);
-  }
-
-  .empty::before {
-    content: '-';
-    color: var(--grey);
-  }
-
-  .empty:focus::before {
-    color: white;
   }
 </style>

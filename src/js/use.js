@@ -28,8 +28,6 @@ export const replaceableElement = (node, options_ = {}) => {
       'pointer-events',
       options.disabled ? 'none' : 'auto'
     );
-    node.setAttribute('tabindex', options.disabled ? '-1' : '0');
-    node.setAttribute('contenteditable', options.disabled ? 'false' : 'true');
   };
 
   setProperties();
@@ -38,8 +36,7 @@ export const replaceableElement = (node, options_ = {}) => {
   const onKeyDown = (e) => {
     if (options.disabled) return;
 
-    // prevent the letters from being prepended to div on android
-    node.setAttribute('contenteditable', 'false');
+    if (e.key !== 'Tab') e.preventDefault();
 
     if (options.ogchar === e.key.toUpperCase()) {
       dispatch('error', {
@@ -55,13 +52,7 @@ export const replaceableElement = (node, options_ = {}) => {
     });
   };
 
-  const onFocus = () => {
-    // it may have been set to false if it went through keydown before
-    node.setAttribute('contenteditable', 'true');
-  };
-
   node.addEventListener('keydown', onKeyDown);
-  node.addEventListener('focus', onFocus);
 
   return {
     update(newOptions) {
@@ -71,7 +62,6 @@ export const replaceableElement = (node, options_ = {}) => {
 
     destroy() {
       node.removeEventListener('keydown', onKeyDown);
-      node.removeEventListener('focus', onFocus);
     },
   };
 };

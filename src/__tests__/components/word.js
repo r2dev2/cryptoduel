@@ -18,6 +18,9 @@ testDuplicateReplacement[13] = 'X'; // n -> x
 const getDecrypted = (el) =>
   el.parentElement.querySelector('.decrypted-letter');
 
+const getDecryptedInput = (el) =>
+  el.parentElement.querySelector('.decrypted-letter input');
+
 const getPair = (el) => el.parentElement;
 
 describe('<Word />', () => {
@@ -29,13 +32,13 @@ describe('<Word />', () => {
   });
 
   it('shows all replaced letters', () => {
-    const { getByText } = render(Word, {
+    const { getByDisplayValue } = render(Word, {
       word: testWord,
       replacement: testReplacement,
     });
 
     for (const letter of ['X', 'B']) {
-      expect(getByText(letter)).toBeInTheDocument();
+      expect(getByDisplayValue(letter)).toBeInTheDocument();
     }
   });
 
@@ -65,7 +68,7 @@ describe('<Word />', () => {
       fired++;
     });
 
-    userEvent.type(getDecrypted(getByText('N')), 'E');
+    userEvent.type(getDecryptedInput(getByText('N')), 'E');
 
     expect(fired).toBe(1);
   });
@@ -82,7 +85,7 @@ describe('<Word />', () => {
     // I don't like the red text lmao
     const x = console.error;
     console.error = noop;
-    userEvent.type(getDecrypted(getByText('N')), 'E');
+    userEvent.type(getDecryptedInput(getByText('N')), 'E');
     console.error = x;
 
     expect(cb).not.toHaveBeenCalled();
@@ -124,7 +127,7 @@ describe('<Word />', () => {
 
     component.$on('replace', cb);
     component.$on('error', errcb);
-    userEvent.type(getDecrypted(getByText('N')), 'N');
+    userEvent.type(getDecryptedInput(getByText('N')), 'N');
 
     expect(cb).not.toHaveBeenCalled();
     expect(errcb).toHaveBeenCalled();

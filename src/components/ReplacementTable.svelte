@@ -6,8 +6,8 @@
     occurencesCharacterLabel,
     replacementCharacterLabel,
   } from '@/js/constants.js';
-  import { replaceableElement } from '@/js/use.js';
   import { getCounts } from '@/js/utils.js';
+  import ReplacementCharacter from './ReplacementCharacter.svelte';
 
   export let replacement = Array(26).fill(' ');
   export let quote = '';
@@ -30,19 +30,15 @@
     <tr class:no-occurence={!isInQuote}>
       <td id={replacementId}>{ch}</td>
       <td>{isInQuote ? frequencies.get(ch) : 0}</td>
-      <td
-        role="textbox"
-        aria-labelledby={replacementId}
-        aria-disabled={!isInQuote}
-        class="replacement-letter"
-        use:replaceableElement={{
-          ogchar: ch,
-          disabled: disabled || !isInQuote,
-          dispatch,
-        }}
-      >
-        {replacement[i]}
-      </td>
+      <ReplacementCharacter
+        tag="td"
+        replacement={replacement[i]}
+        disabled={disabled || !isInQuote}
+        ogchar={ch}
+        disableUnderline
+        on:error
+        on:replace
+      />
     </tr>
   {/each}
 </table>
@@ -61,13 +57,13 @@
     width: 2rem;
   }
 
-  td {
+  .replacement-table :global(td) {
     border-right: var(--border);
     border-bottom: var(--border);
     padding: 0.25rem;
   }
 
-  td:first-child {
+  .replacement-table :global(td:first-child) {
     border-top: var(--border);
   }
 
@@ -80,30 +76,24 @@
     text-align: center;
   }
 
-  .replacement-letter,
   .to-label {
     height: 1.15rem;
   }
 
-  .replacement-letter {
-    caret-color: transparent;
+  .replacement-table :global(.decrypted-letter) {
+    padding: 0rem;
+    width: calc(2rem - 1px);
+    height: 1.65rem;
   }
 
-  :not(.disabled) .replacement-letter:hover {
-    cursor: text;
-    background-color: var(--hovered-letter-color);
-  }
-
-  :not(.disabled) .replacement-letter:focus {
-    background-color: var(--selected-letter-color);
+  .replacement-table :global(.decrypted-letter input) {
+    padding: 0.25rem;
+    text-align: left;
   }
 
   .no-occurence {
     background-color: var(--no-occurence-color);
     color: var(--no-occurence-bg-color);
-  }
-
-  .no-occurence .replacement-letter {
     pointer-events: none;
   }
 </style>
