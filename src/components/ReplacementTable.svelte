@@ -86,7 +86,7 @@
     height: 1.65rem;
   }
 
-  .replacement-table :global(.decrypted-letter input) {
+  .replacement-table :global(.decrypted-letter-input) {
     padding: 0.25rem;
     text-align: left;
   }

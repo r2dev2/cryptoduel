@@ -37,6 +37,9 @@ export const isFirstLaunch = lswritable(firstlaunch, true);
 /** @type {Map<string, Connection>} */
 export const connections = new Map(); // id -> connection
 
+/** @type {Map<number, (newChar: string) => void>} */
+export const keyboardSubscriptions = new Map();
+
 export const self = derived(
   [id, name, progress, solved],
   ([id, name, progress, solved]) => {
