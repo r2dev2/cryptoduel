@@ -15,10 +15,11 @@
 
   const rows = [firstRow, secondRow, thirdRow];
 
-  const onClick = (char) => (e) => {
-    e.preventDefault();
-    keyboardSubscriptions.forEach((cb) => cb(char));
-  };
+  const onClick =
+    (/** @type {string} */ char) => (/** @type {MouseEvent} */ e) => {
+      e.preventDefault();
+      keyboardSubscriptions.forEach((cb) => cb(char));
+    };
 </script>
 
 <div class="custom-keyboard">

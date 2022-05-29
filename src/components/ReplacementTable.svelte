@@ -1,5 +1,4 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
   import {
     alphabet,
     cryptogramCharacterLabel,
@@ -12,8 +11,6 @@
   export let replacement = Array(26).fill(' ');
   export let quote = '';
   export let disabled = false;
-
-  const dispatch = createEventDispatcher();
 
   $: frequencies = getCounts(quote);
 </script>

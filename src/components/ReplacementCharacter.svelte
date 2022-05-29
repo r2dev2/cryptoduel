@@ -1,9 +1,10 @@
 <script>
   import { subscribeToKeyboard } from '@/js/actions.js';
+  import { Errors } from '@/js/constants.js';
   import { replaceableElement } from '@/js/use.js';
   import { createEventDispatcher, onMount } from 'svelte';
 
-  export let replacement = ['', null].slice(2);
+  export let replacement = ['', null][0];
   export let disabled = false;
   export let ogchar = '';
   export let disableUnderline = false;
