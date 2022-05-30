@@ -7,7 +7,7 @@
   than y'all and allows for proper keydown.
 -->
 <script>
-  import { keyboardSubscriptions } from '@/js/store.js';
+  import { keyboardSubscriptions, needsKeyboardEntry } from '@/js/store.js';
 
   const firstRow = 'QWERTYUIOP';
   const secondRow = 'ASDFGHJKL';
@@ -22,7 +22,7 @@
     };
 </script>
 
-<div class="custom-keyboard">
+<div class="custom-keyboard" class:show={$needsKeyboardEntry}>
   {#each rows as row}
     <div class="keyboard-row">
       {#each row as char}
@@ -48,6 +48,12 @@
     width: 100%;
 
     background-color: var(--grey);
+    transform: translateY(100%);
+    transition: 300ms ease-out;
+  }
+
+  .custom-keyboard.show {
+    transform: none;
   }
 
   .keyboard-row {

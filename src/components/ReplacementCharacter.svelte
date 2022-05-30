@@ -1,6 +1,7 @@
 <script>
   import { subscribeToKeyboard } from '@/js/actions.js';
-  import { Errors } from '@/js/constants.js';
+  import { isAndroid, Errors } from '@/js/constants.js';
+  import { needsKeyboardEntry } from '@/js/store.js';
   import { replaceableElement } from '@/js/use.js';
   import { createEventDispatcher, onMount } from 'svelte';
 
@@ -36,6 +37,9 @@
       });
     })
   );
+
+  $: if (focussed && isAndroid) needsKeyboardEntry.set(true);
+  $: if (!focussed && isAndroid) needsKeyboardEntry.set(false);
 </script>
 
 <svelte:element
@@ -45,7 +49,7 @@
   class:non-alphabetic={replacement === null}
   class:enable-underline={!disableUnderline}
 >
-  {#if 1}
+  {#if isAndroid}
     <div
       class="decrypted-letter-input"
       tabindex={disabled ? -1 : 0}
