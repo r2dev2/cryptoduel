@@ -1,91 +1,51 @@
-# Svelte Template Hot
+# Cryptoduel
 
-This is a copy of official [Svelte template](https://github.com/sveltejs/template) with added HMR support. It lives at https://github.com/rixo/svelte-template-hot.
+[Play Game!](https://r2dev2.github.io/cryptoduel)
 
-This also packages a working eslint configuration and github deploy action (deploys to `gh-pages`).
+A multiplayer cryptogram game where the fastest cryptogram solver wins!
 
-This template aims to remain as close to the official template as possible. Please refer to official docs for general usage. For HMR specific stuff, see bellow.
+![laptop demo](./img/demo-laptop.png)
 
-**:warning: Experimental :warning:**
+## How To Play
 
-This HMR implementation relies on Svelte's private & non documented API. This means that it can stop working with any new version of Svelte.
+An aristocrat cryptogram is a quote encrypted by substituting each letter with another letter.
 
-Progress of Svelte HMR support can be tracked in [this issue](https://github.com/sveltejs/svelte/issues/3632).
+In cryptoduel, you compete with friends to see who can decrypt the quote the fastest!
+Just go to https://r2dev2.github.io/cryptoduel and send a friend a join link!
 
-**Update 2020-02-24** We're [making progress](https://github.com/sveltejs/svelte/pull/3822) :)
+The table given shows the amount of times each character appears in the quote as well as the replacement for each character. You may either enter replacment characters into the table or under each character of the quote.
 
-**NOTE** This template pins the minor version of Svelte in `package.json`, using the [tilde comparator](https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1) because, in practice, HMR breakages tend to only happen with new minor versions of Svelte (not patch). And I don't want people to download a hot template with broken HMR... But, in your app, you can change this to your liking -- because you might be more interested in last version of Svelte than stable HMR, or be wise and pin the exact versions of all you dependencies.
+## Motivation
 
-## Installation
+Throughout all four years of high school, I competed in a [Science Olympiad event called codebusters](https://scioly.org/wiki/index.php/Codebusters). It is my favorite event and the event was more or less to solve cryptograms like the ones in this game. I hope other codebusters competitors may either train or just have fun with this game.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+## Keyboard Shortcuts
 
-```bash
-npx degit r2dev2/svelte-template-hot svelte-app
-cd svelte-app
-pnpm install
+`Tab` and `Shift+Tab` will go to the next letter and previous letter respectively.
+
+## Development
+
+### Setup
+
+```
+yarn
 ```
 
-Run the build script a first time, in order to avoid 404 errors about missing `bundle.css` in the browser:
+### Commands
 
-```bash
-pnpm run build
+```
+yarn build # production build
+yarn dev # dev server with hmr
+yarn dev:livereload # dev server with livereload
+yarn dev:lan # dev livereload server bound to 0.0.0.0, use for developing mobile
+yarn test # run jest tests
+yarn test:watch # run jest tests in watch mode
+yarn type:check # type-check the code
+yarn type:check:watch # type-check the code in watch mode
+yarn start # start a server to serve production build
+yarn format # format the code
 ```
 
-## Quick start
+## Developers
 
-```bash
-pnpm run dev
-```
-
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and... Eyeball!
-
-## Usage
-
-HMR is supported both with [Nollup](https://github.com/PepsRyuu/nollup) or with Rollup itself with (very experimental) [rollup-plugin-hot](https://github.com/rixo/rollup-plugin-hot).
-
-Nollup implements the shortest possible path from a file change to the module reloaded in the browser and is all in-memory. Said otherwise, it is insanely fast. Also, it has been around for some time so it is quite battle tested already.
-
-The Rollup plugin on the other hand is still little more than a proof of concept by now, but it has better sourcemap support and error reporting (according to my own tastes at least).
-
-Support for both Nollup and Rollup HMR is provided by [rollup-plugin-svelte-hot](https://github.com/rixo/rollup-plugin-svelte-hot). Please report issues regarding HMR in [this plugin's tracker](https://github.com/rixo/rollup-plugin-svelte-hot/issues). Or [this template's project](https://github.com/rixo/svelte-template-hot/issues) might make more sense. You be the judge.
-
-### Start HMR server with Nollup
-
-```bash
-pnpm run dev:nollup
-```
-
-### Start Rollup with HMR support
-
-```bash
-pnpm run dev:rollup
-```
-
-### Start with LiveReload (no HMR)
-
-This is the default `dev` of official template.
-
-```bash
-pnpm run dev:livereload
-```
-
-### Start with default method
-
-Nollup HMR is also aliased as `dev` so you can simply run:
-
-```bash
-pnpm run dev
-```
-
-You can change the default `dev` script to your preferred method in the `scripts` section of `package.json`.
-
-**2020-06-29** Nollup has been made the default `dev` script (instead of Rollup) because just released Nollup 0.12.0 fixes support for Svelte sourcemaps and dynamic imports, and Nollup is monstrously fast (especially on the most important metrics, that is rebuild time in big projects)!
-
-The suggested workflow is to use Nollup for dev and enjoy instant feedback loop. If you need a plugin that doesn't work with Nollup, or if you are in a situation that Nollup makes harder to debug (mainly because of it running your code through eval), you can fallback on `pnpm run dev:rollup` (HMR with rollup-plugin-hot). If you have a bug that you suspect might be caused by HMR or HMR code transform, confirm by turning back to `pnpm run dev:livereload`.
-
-### Build
-
-```bash
-pnpm run build
-```
+Cryptoduel is developed by [Ronak Badhe (r2dev2)](https://github.com/r2dev2)
