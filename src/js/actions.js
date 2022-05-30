@@ -7,7 +7,7 @@ import {
   getCongratulationsTitle,
 } from './cryptoduelutils.js';
 import { noshow } from './constants.js';
-import { problemStart } from './store.js';
+import { problemStart, keyboardSubscriptions } from './store.js';
 
 /** @typedef {import('./constants.js').Error} Error */
 
@@ -55,4 +55,13 @@ export const showError = (
       localStorage.setItem(errKey, noshow);
     }
   });
+};
+
+let keebSub = 0;
+
+/** @type {(listener: (c: string) => void) => () => void} */
+export const subscribeToKeyboard = (listener) => {
+  const subscriptionId = keebSub++;
+  keyboardSubscriptions.set(keebSub, listener);
+  return () => keyboardSubscriptions.delete(subscriptionId);
 };

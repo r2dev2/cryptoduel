@@ -1,14 +1,45 @@
 <script>
+  import { subscribeToKeyboard } from '@/js/actions.js';
+  import { isAndroid, Errors } from '@/js/constants.js';
+  import { needsKeyboardEntry } from '@/js/store.js';
   import { replaceableElement } from '@/js/use.js';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
 
-  export let replacement = ['', null].slice(2);
+  export let replacement = ['', null][0];
   export let disabled = false;
   export let ogchar = '';
   export let disableUnderline = false;
   export let tag = 'div';
 
+  let focussed = false;
+
+  $: replacement_ = replacement;
+  $: if (replacement_ !== replacement) {
+    replacement_ = replacement;
+  }
+
   const dispatch = createEventDispatcher();
+
+  onMount(() =>
+    subscribeToKeyboard((char) => {
+      if (!focussed) return;
+      if (ogchar === char && ogchar !== '') {
+        dispatch('error', {
+          id: Errors.NO_SELF_DECODE,
+          msg: 'Letters cannot decode to themselves',
+        });
+        return;
+      }
+
+      dispatch('replace', {
+        from: ogchar,
+        to: char,
+      });
+    })
+  );
+
+  $: if (focussed && isAndroid) needsKeyboardEntry.set(true);
+  $: if (!focussed && isAndroid) needsKeyboardEntry.set(false);
 </script>
 
 <svelte:element
@@ -18,12 +49,27 @@
   class:non-alphabetic={replacement === null}
   class:enable-underline={!disableUnderline}
 >
-  <input
-    maxlength={1}
-    value={replacement}
-    {disabled}
-    use:replaceableElement={{ ogchar, disabled, dispatch }}
-  />
+  {#if isAndroid}
+    <div
+      class="decrypted-letter-input"
+      tabindex={disabled ? -1 : 0}
+      on:focus={() => (focussed = true)}
+      on:blur={() => (focussed = false)}
+    >
+      {replacement_}
+    </div>
+  {:else}
+    <input
+      class="decrypted-letter-input"
+      type="text"
+      maxlength={1}
+      bind:value={replacement_}
+      on:focus={() => (focussed = true)}
+      on:blur={() => (focussed = false)}
+      {disabled}
+      use:replaceableElement={{ ogchar, disabled, dispatch }}
+    />
+  {/if}
 </svelte:element>
 
 <style>
@@ -36,7 +82,14 @@
     position: relative;
   }
 
-  input {
+  div.decrypted-letter-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .decrypted-letter-input {
     border: none;
     border-radius: 0;
     width: 100%;
@@ -47,12 +100,12 @@
     font-family: monospace;
   }
 
-  input:hover {
+  .decrypted-letter-input:hover {
     cursor: pointer;
     background-color: var(--hovered-letter-color);
   }
 
-  input:focus {
+  .decrypted-letter-input:focus {
     background-color: var(--selected-letter-color);
     outline: none;
   }

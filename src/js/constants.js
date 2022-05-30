@@ -15,6 +15,7 @@ export const Messages = {
 
 export const hivemindBrain = new URLSearchParams(location.search).get('game');
 export const isHivemindBrain = hivemindBrain === null;
+export const isAndroid = window.navigator.userAgent.includes('Android');
 
 /** @enum {string} */
 export const Errors = {

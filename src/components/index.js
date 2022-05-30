@@ -8,3 +8,4 @@ export { default as ReplacementTable } from './ReplacementTable.svelte';
 export { default as FirstLaunchPrompt } from './FirstLaunchPrompt.svelte';
 export { default as Game } from './Game.svelte';
 export { default as HelpInfo } from './HelpInfo.svelte';
+export { default as Keyboard } from './Keyboard.svelte';

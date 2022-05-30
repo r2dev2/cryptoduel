@@ -1,5 +1,4 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
   import { alphabet } from '@/js/quotes.js';
   import { getDuplicates } from '@/js/utils.js';
 
@@ -8,8 +7,6 @@
   export let word = '';
   export let replacement = Array(26).fill('');
   export let disabled = false;
-
-  const dispatch = createEventDispatcher();
 
   /** @type {(word: string, replacement: string[]) => Array<string | null>} */
   const replaceChars = (word, replacement) =>

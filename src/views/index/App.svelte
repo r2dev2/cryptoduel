@@ -4,13 +4,14 @@
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
-  import { FirstLaunchPrompt, Game } from '@/components';
+  import { FirstLaunchPrompt, Game, Keyboard } from '@/components';
 
   $: log('users:', $users);
   $: if ($solved) confettiCelebration();
 </script>
 
 <canvas id="confetti" />
+<Keyboard />
 <main>
   {#if $isFirstLaunch}
     <FirstLaunchPrompt />
