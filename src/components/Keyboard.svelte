@@ -1,11 +1,3 @@
-<!--
-  Fuck you Android devs for making me do this.
-  Why do y'all have to be so quirky and not implement keydown correctly
-  on Android because you want devs to adapt to taking in inputs instead
-  of keystrokes.
-  Fuck off, even iOS manages to have a better keyboard entry mechanism
-  than y'all and allows for proper keydown.
--->
 <script>
   import { keyboardSubscriptions, needsKeyboardEntry } from '@/js/store.js';
 
@@ -15,23 +7,49 @@
 
   const rows = [firstRow, secondRow, thirdRow];
 
-  const onClick =
-    (/** @type {string} */ char) => (/** @type {MouseEvent} */ e) => {
+  /** @type {Map<string, boolean>} */
+  let active = new Map();
+
+  const onTouch =
+    (/** @type {string} */ char) => (/** @type {TouchEvent} */ e) => {
       e.preventDefault();
       keyboardSubscriptions.forEach((cb) => cb(char));
+      active.set(char, true);
+      // eslint-disable-next-line no-self-assign
+      active = active;
     };
+
+  const onTouchEnd = (/** @type {string} */ char) => () => {
+    active.set(char, false);
+    // eslint-disable-next-line no-self-assign
+    active = active;
+  };
 </script>
 
 <div class="custom-keyboard" class:show={$needsKeyboardEntry}>
   {#each rows as row}
     <div class="keyboard-row">
       {#each row as char}
-        <div class="key" on:mousedown={onClick(char)}>{char}</div>
+        <div
+          class="key"
+          class:active={active.get(char)}
+          on:touchstart={onTouch(char)}
+          on:touchend={onTouchEnd(char)}
+        >
+          {char}
+        </div>
       {/each}
     </div>
   {/each}
   <div class="keyboard-row">
-    <div class="key" on:mousedown={onClick('BACKSPACE')}>----------</div>
+    <div
+      class="key"
+      class:active={active.get('BACKSPACE')}
+      on:touchstart={onTouch('BACKSPACE')}
+      on:touchend={onTouchEnd('BACKSPACE')}
+    >
+      ----------
+    </div>
   </div>
 </div>
 
@@ -65,9 +83,11 @@
     flex-grow: 1;
     text-align: center;
     padding: 0.25rem 0;
+    transition: 200ms ease-out;
   }
 
-  .key:active {
+  .key.active {
     background-color: var(--primary-color);
+    transition: none;
   }
 </style>
