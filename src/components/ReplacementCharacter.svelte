@@ -38,6 +38,7 @@
     })
   );
 
+  $: if (focussed && disabled) focussed = false;
   $: if (focussed && isAndroid) needsKeyboardEntry.set(true);
   $: if (!focussed && isAndroid) needsKeyboardEntry.set(false);
 </script>
@@ -48,6 +49,7 @@
   class:empty={replacement === ''}
   class:non-alphabetic={replacement === null}
   class:enable-underline={!disableUnderline}
+  class:disabled
 >
   {#if isAndroid}
     <div
@@ -100,12 +102,12 @@
     font-family: monospace;
   }
 
-  .decrypted-letter-input:hover {
+  :not(.disabled) .decrypted-letter-input:hover {
     cursor: pointer;
     background-color: var(--hovered-letter-color);
   }
 
-  .decrypted-letter-input:focus {
+  :not(.disabled) .decrypted-letter-input:focus {
     background-color: var(--selected-letter-color);
     outline: none;
   }
