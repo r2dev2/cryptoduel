@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import { keyboardSubscriptions, needsKeyboardEntry } from '@/js/store.js';
 
   const firstRow = 'QWERTYUIOP';
@@ -9,6 +10,8 @@
 
   /** @type {Map<string, boolean>} */
   let active = new Map();
+
+  let mounted = false;
 
   const onTouch =
     (/** @type {string} */ char) => (/** @type {TouchEvent} */ e) => {
@@ -24,8 +27,23 @@
     // eslint-disable-next-line no-self-assign
     active = active;
   };
+
+  const scrollAmount = 10.6 * 16; // 10.6rem
+
+  $: if ($needsKeyboardEntry) {
+    window.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+  } else {
+    if (mounted) {
+      window.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
+    }
+  }
+
+  onMount(() => {
+    mounted = true;
+  });
 </script>
 
+<!-- 10.6rem tall custom keyboard -->
 <div class="custom-keyboard" class:show={$needsKeyboardEntry}>
   {#each rows as row}
     <div class="keyboard-row">
@@ -82,7 +100,7 @@
   .key {
     flex-grow: 1;
     text-align: center;
-    padding: 0.25rem 0;
+    padding: 0.75rem 0;
     transition: 200ms ease-out;
   }
 

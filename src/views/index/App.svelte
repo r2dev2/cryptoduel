@@ -1,6 +1,11 @@
 <script>
   import '@/js/networking.js';
-  import { isFirstLaunch, users, solved } from '@/js/store.js';
+  import {
+    isFirstLaunch,
+    needsKeyboardEntry,
+    users,
+    solved,
+  } from '@/js/store.js';
   import { confettiCelebration, showError } from '@/js/actions.js';
   import { log } from '@/js/utils.js';
 
@@ -18,6 +23,7 @@
   {:else}
     <Game on:error={(e) => showError(e.detail)} />
   {/if}
+  <div class="keyboard-spacer" class:display={$needsKeyboardEntry} />
 </main>
 
 <style>
@@ -47,6 +53,17 @@
     height: 100vh;
     z-index: 9999;
     pointer-events: none;
+  }
+
+  .keyboard-spacer {
+    width: 100%;
+    height: 0rem;
+    transition: 100ms ease-out 200ms;
+  }
+
+  .keyboard-spacer.display {
+    height: 10.6rem;
+    transition: none;
   }
 
   :root {
