@@ -89,6 +89,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
   }
 
   .decrypted-letter-input {

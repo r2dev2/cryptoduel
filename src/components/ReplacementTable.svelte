@@ -88,6 +88,10 @@
     text-align: left;
   }
 
+  .replacement-table :global(div.decrypted-letter-input) {
+    justify-content: left;
+  }
+
   .no-occurence {
     background-color: var(--no-occurence-color);
     color: var(--no-occurence-bg-color);
