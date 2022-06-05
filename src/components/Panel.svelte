@@ -42,6 +42,13 @@
     animation: fly-from-left var(--fly-in-duration) var(--one-bounce-spring);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .panel {
+      animation: fade-in var(--expansion-transition-duration)
+        var(--one-bounce-spring);
+    }
+  }
+
   .panel:not(.expanded) {
     height: max-content;
   }
@@ -113,6 +120,16 @@
     to {
       filter: opacity(1);
       transform: translateX(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      filter: opacity(0);
+    }
+
+    to {
+      filter: opacity(1);
     }
   }
 </style>
