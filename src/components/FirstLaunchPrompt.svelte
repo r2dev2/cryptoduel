@@ -40,6 +40,12 @@
     transform: translate(calc(100vw - 50%), -50%);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .exiting.container {
+      transform: translate(-50%, -50%);
+    }
+  }
+
   .container :global(.name-chooser) {
     margin-top: 1.5rem;
   }
