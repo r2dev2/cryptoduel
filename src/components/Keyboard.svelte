@@ -66,7 +66,7 @@
       on:touchstart={onTouch('BACKSPACE')}
       on:touchend={onTouchEnd('BACKSPACE')}
     >
-      ----------
+      DELETE
     </div>
   </div>
 </div>
@@ -84,11 +84,15 @@
     width: 100%;
 
     background-color: var(--grey);
+    opacity: 0;
+    pointer-events: none;
     transform: translateY(100%);
     transition: 300ms ease-out;
   }
 
   .custom-keyboard.show {
+    opacity: 1;
+    pointer-events: auto;
     transform: none;
   }
 
