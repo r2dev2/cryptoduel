@@ -70,6 +70,12 @@
     animation: vibrate 100ms ease-in-out alternate infinite;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .play-button:not(.starting-exit):hover {
+      animation: none;
+    }
+  }
+
   .play-button:focus {
     position: relative;
     background-color: var(--primary-color);
