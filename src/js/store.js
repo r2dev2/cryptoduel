@@ -34,6 +34,7 @@ export const progress = writable([null, [true]][0]);
 export const solved = writable(false);
 export const isFirstLaunch = lswritable(firstlaunch, true);
 export const needsKeyboardEntry = writable(false);
+export const focussedKey = writable(/** @type {string | null} */ (null));
 
 /** @type {Map<string, Connection>} */
 export const connections = new Map(); // id -> connection

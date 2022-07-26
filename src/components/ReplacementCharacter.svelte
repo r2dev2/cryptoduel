@@ -1,7 +1,12 @@
+<script context="module">
+  /** @type {Set<string>} */
+  const focussedKeys = new Set();
+</script>
+
 <script>
   import { subscribeToKeyboard } from '@/js/actions.js';
   import { isAndroid, Errors } from '@/js/constants.js';
-  import { needsKeyboardEntry } from '@/js/store.js';
+  import { focussedKey, needsKeyboardEntry } from '@/js/store.js';
   import { replaceableElement } from '@/js/use.js';
   import { createEventDispatcher, onMount } from 'svelte';
 
@@ -17,6 +22,18 @@
   $: if (replacement_ !== replacement) {
     replacement_ = replacement;
   }
+
+  const handleFocus = () => {
+    focussedKeys.add(ogchar);
+    focussedKey.set(ogchar);
+    focussed = true;
+  };
+
+  const handleBlur = () => {
+    focussedKeys.delete(ogchar);
+    focussedKey.set(focussedKeys.size === 1 ? [...focussedKeys][0] : null);
+    focussed = false;
+  };
 
   const dispatch = createEventDispatcher();
 
@@ -47,6 +64,7 @@
   this={tag}
   class="decrypted-letter"
   class:empty={replacement === ''}
+  class:focussed-char={$focussedKey === ogchar}
   class:non-alphabetic={replacement === null}
   class:enable-underline={!disableUnderline}
   class:disabled
@@ -55,8 +73,8 @@
     <div
       class="decrypted-letter-input"
       tabindex={disabled ? -1 : 0}
-      on:focus={() => (focussed = true)}
-      on:blur={() => (focussed = false)}
+      on:focus={handleFocus}
+      on:blur={handleBlur}
     >
       {replacement_}
     </div>
@@ -66,8 +84,8 @@
       type="text"
       maxlength={1}
       bind:value={replacement_}
-      on:focus={() => (focussed = true)}
-      on:blur={() => (focussed = false)}
+      on:focus={handleFocus}
+      on:blur={handleBlur}
       {disabled}
       use:replaceableElement={{ ogchar, disabled, dispatch }}
     />
@@ -101,6 +119,11 @@
     text-align: center;
     caret-color: transparent;
     font-family: monospace;
+  }
+
+  :not(.disabled).focussed-char .decrypted-letter-input {
+    cursor: pointer;
+    background-color: var(--focussed-char-color);
   }
 
   :not(.disabled) .decrypted-letter-input:hover {
