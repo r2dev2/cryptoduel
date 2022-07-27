@@ -94,6 +94,7 @@
 
 <style>
   .decrypted-letter {
+    --underline-color: var(--grey);
     width: 1rem;
     height: 1.2rem;
   }
@@ -146,12 +147,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--grey);
+    color: var(--underline-color);
     pointer-events: none;
   }
 
-  .enable-underline.empty:focus-within::before {
-    color: white;
+  .enable-underline.empty:focus-within,
+  .enable-underline.focussed-char {
+    --underline-color: white;
   }
 
   ::selection {
