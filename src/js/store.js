@@ -27,6 +27,7 @@ export const name = lswritable(
   'name',
   `person-${Math.floor(Math.random() * 10000)}`
 );
+export const patristocratEnabled = lswritable('patristocrat', false);
 export const hivemindConnection = writable(
   /** @type {Connection | null} */ (null)
 );

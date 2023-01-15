@@ -4,7 +4,8 @@
 
 <p>
   An aristocrat cryptogram is a quote encrypted by substituting each letter with
-  another letter.
+  another letter. A patristocrat cryptogram is an aristocrat with all whitespace
+  and punctuation removed.
 </p>
 <p>
   In cryptoduel, you compete with friends to see who can decrypt the quote the

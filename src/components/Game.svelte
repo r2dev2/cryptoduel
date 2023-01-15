@@ -4,12 +4,18 @@
   import OpponentProgress from './OpponentProgress.svelte';
   import CryptogramSolver from './CryptogramSolver.svelte';
   import JoinLink from './JoinLink.svelte';
+  import Checkbox from './Checkbox.svelte';
   import Lobby from './Lobby.svelte';
   import Panel from './Panel.svelte';
 
-  import { getQuoteGenerator, toAristocratCipher } from '@/js/quotes.js';
+  import {
+    getQuoteGenerator,
+    toAristocratCipher,
+    toPatristocratCipher,
+  } from '@/js/quotes.js';
   import { isHivemindBrain, hivemindBrain } from '@/js/constants.js';
   import {
+    patristocratEnabled,
     progress,
     gameProblem,
     solved,
@@ -19,8 +25,14 @@
 
   const getNewQuote = getQuoteGenerator();
 
+  /** @type {typeof toAristocratCipher} */
+  const createProblem = (quote) =>
+    $patristocratEnabled
+      ? toPatristocratCipher(toAristocratCipher(quote))
+      : toAristocratCipher(quote);
+
   const newProblem = () => {
-    getNewQuote().then((quote) => gameProblem.set(toAristocratCipher(quote)));
+    getNewQuote().then((quote) => gameProblem.set(createProblem(quote)));
   };
 
   $: connectingToHivemind = !isHivemindBrain && $hivemindConnection === null;
@@ -32,7 +44,15 @@
       <JoinLink />
     </Panel>
     <Panel title="Settings">
-      <NameChooser />
+      <div class="row">
+        <NameChooser />
+        <Checkbox
+          id="patristocrat-option"
+          label="Patristocrat"
+          bind:checked={$patristocratEnabled}
+          disabled={$gameProblem !== null}
+        />
+      </div>
     </Panel>
   </div>
   <Panel title="Help" dense closed>
