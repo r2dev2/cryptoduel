@@ -58,10 +58,10 @@ export const toAristocratCipher = (quote) => {
 
 /** @type {(text: string) => string} */
 const patristify = (text) => {
-  const alphabetChars = [...text].filter(c => alphabet.includes(c)).join('');
+  const alphabetChars = [...text].filter((c) => alphabet.includes(c)).join('');
   return [...Array(alphabetChars.length).keys()]
-    .filter(i => i % 5 == 0)
-    .map(i => alphabetChars.slice(i, i + 5))
+    .filter((i) => i % 5 === 0)
+    .map((i) => alphabetChars.slice(i, i + 5))
     .join(' ');
 };
 
@@ -70,7 +70,7 @@ export const toPatristocratCipher = (quote) => ({
   ...quote,
   plaintext: patristify(quote.plaintext),
   ciphertext: patristify(quote.ciphertext),
-  hint: splitQuote(quote.plaintext)[0]
+  hint: splitQuote(quote.plaintext)[0],
 });
 
 /** @type {(text: string) => string[]} */
