@@ -53,7 +53,13 @@ export const toAristocratCipher = (quote) => {
     .map((char) => encryptionAlphabet[alphabet.indexOf(char)] ?? char)
     .join('');
 
-  return { ...quote, plaintext, ciphertext, start: Date.now() };
+  return {
+    ...quote,
+    plaintext,
+    ciphertext,
+    start: Date.now(),
+    hint: splitQuote(plaintext)[0],
+  };
 };
 
 /** @type {(text: string) => string} */
@@ -70,7 +76,6 @@ export const toPatristocratCipher = (quote) => ({
   ...quote,
   plaintext: patristify(quote.plaintext),
   ciphertext: patristify(quote.ciphertext),
-  hint: splitQuote(quote.plaintext)[0],
 });
 
 /** @type {(text: string) => string[]} */

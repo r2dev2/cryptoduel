@@ -58,6 +58,9 @@
 
 {#if problem}
   <p>Solve this quote by {problem.author}</p>
+  {#if problem.hint}
+    <p>HINT: The first word is {problem.hint}</p>
+  {/if}
   <div class="cryptogram" class:solved>
     {#each words as word}
       <Word

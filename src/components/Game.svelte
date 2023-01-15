@@ -15,6 +15,7 @@
   } from '@/js/quotes.js';
   import { isHivemindBrain, hivemindBrain } from '@/js/constants.js';
   import {
+    hintEnabled,
     patristocratEnabled,
     progress,
     gameProblem,
@@ -26,10 +27,12 @@
   const getNewQuote = getQuoteGenerator();
 
   /** @type {typeof toAristocratCipher} */
-  const createProblem = (quote) =>
-    $patristocratEnabled
+  const createProblem = (quote) => {
+    const problem = $patristocratEnabled
       ? toPatristocratCipher(toAristocratCipher(quote))
       : toAristocratCipher(quote);
+    return $hintEnabled ? problem : { ...problem, hint: undefined };
+  };
 
   const newProblem = () => {
     getNewQuote().then((quote) => gameProblem.set(createProblem(quote)));
@@ -50,6 +53,12 @@
           id="patristocrat-option"
           label="Patristocrat"
           bind:checked={$patristocratEnabled}
+          disabled={$gameProblem !== null}
+        />
+        <Checkbox
+          id="hint-option"
+          label="Hint"
+          bind:checked={$hintEnabled}
           disabled={$gameProblem !== null}
         />
       </div>
