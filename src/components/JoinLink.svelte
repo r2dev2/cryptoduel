@@ -5,9 +5,20 @@
   export let id = id_;
 
   let clicked = false;
+  // whether we can use the navigator.share api
+  let shareLink = 'share' in navigator;
 
-  const onClick = () => {
+  const copyToClipboard = () => {
     navigator.clipboard.writeText(joinLink);
+    clicked = true;
+  };
+
+  const share = () => {
+    navigator.share({
+      title: 'Cryptoduel',
+      text: 'Join my cryptoduel game!',
+      url: joinLink,
+    });
     clicked = true;
   };
 
@@ -16,9 +27,13 @@
 
 <div class="join-links">
   {#if $id !== ''}
-    <button class="join-link" on:click={onClick}>
-      {clicked ? 'Join Link (copied)' : 'Copy Join Link'}
-    </button>
+    {#if shareLink}
+      <button class="join-link" on:click={share}> Share Link </button>
+    {:else}
+      <button class="join-link" on:click={copyToClipboard}>
+        {clicked ? 'Join Link (copied)' : 'Copy Join Link'}
+      </button>
+    {/if}
     <a href={joinLink}>{joinLink}</a>
   {:else}
     <p class="waiting">Acquiring join link...</p>
