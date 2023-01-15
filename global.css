@@ -81,22 +81,28 @@ button, button.swal2-styled {
 	transition: 200ms ease-out;
 }
 
+.moe-component {
+	outline: none;
+	box-shadow: var(--elevation-1);
+	transition: 200ms ease-out;
+}
+
 button {
 	color: #505152;
 }
 
-button:hover, button.swal2-styled:hover {
+button:hover, button.swal2-styled:hover, .moe-component:not(:disabled):hover {
 	box-shadow: var(--elevation-1);
 	filter: brightness(90%);
 }
 
-button:not(:disabled):active, button.swal2-styled:active {
+button:not(:disabled):active, button.swal2-styled:active, .moe-component:not(:disabled):active {
 	box-shadow: none;
 	outline: none;
 	transform: translate(1px, 2px);
 }
 
-button:focus, button.swal2-styled:focus {
+button:focus, button.swal2-styled:focus, .moe-component:focus {
 	border: none;
 	outline: none;
 	box-shadow: var(--elevation-1) !important;
