@@ -2,6 +2,7 @@ import {
   alphabet,
   getQuoteGenerator,
   toAristocratCipher,
+  toPatristocratCipher,
 } from '@/js/quotes.js';
 
 const getFetchMock = (respond) => async (url) => ({
@@ -20,9 +21,9 @@ const remoteTestQuotes = [
 ];
 
 const ramTestQuotes = [
-  { text: 'Though shalt not pass.', author: 'anon' },
-  { text: 'The quick brown fox jumps over the lazy dog.', author: 'me' },
-  { text: "I don't like sand.", author: 'Anakin Skywalker' },
+  { text: 'Though shalt not pass.', author: 'anon', first: 'Though' },
+  { text: 'The quick brown fox jumps over the lazy dog.', author: 'me', first: 'The' },
+  { text: "I don't like sand.", author: 'Anakin Skywalker', first: 'I' },
 ];
 
 const MANY_TRIES = 1e2;
@@ -97,4 +98,35 @@ describe('quote to aristocrat cipher', () => {
       });
     }
   );
+});
+
+describe('aristocrat to patristocrat cipher', () => {
+  const testCases = ramTestQuotes.map(toAristocratCipher);
+
+  it.each(testCases)('splits into 5-letter groups separated with space', (quote) => {
+    const patristocrat = toPatristocratCipher(quote);
+    const splits = patristocrat.ciphertext.split(' ');
+    for (const [ i, split ] of splits.entries()) {
+      // last split may have less than 5 letters
+      if (i == splits.length - 1) {
+        expect(split.length).toBeLessThanOrEqual(5);
+      } else {
+        expect(split.length).toEqual(5);
+      }
+
+      expect([...split].every(c => alphabet.includes(c))).toBe(true);
+
+      // verify no characters were lost
+      expect(patristocrat.ciphertext.length).toEqual(patristocrat.plaintext.length);
+    }
+  });
+
+  it.each(testCases)('characters are same as aristocrat', (quote) => {
+    const patristocrat = toPatristocratCipher(quote);
+    const condensedPatristocrat = patristocrat.ciphertext.split(' ').join('');
+    const condensedAristocrat = [...quote.ciphertext]
+      .filter(c => alphabet.includes(c))
+      .join('');
+    expect(condensedPatristocrat).toEqual(condensedAristocrat);
+  })
 });

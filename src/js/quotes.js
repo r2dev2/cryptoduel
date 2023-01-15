@@ -4,7 +4,7 @@ export { alphabet } from './constants.js';
 
 /** @typedef {{ author: string, text: string }} Quote */
 /** @typedef {Quote & {
-  plaintext: string, ciphertext: string, start: number
+  plaintext: string, ciphertext: string, start: number, hint?: string
 }} EncryptedQuote */
 
 export const getQuoteGenerator = () => {
@@ -55,6 +55,23 @@ export const toAristocratCipher = (quote) => {
 
   return { ...quote, plaintext, ciphertext, start: Date.now() };
 };
+
+/** @type {(text: string) => string} */
+const patristify = (text) => {
+  const alphabetChars = [...text].filter(c => alphabet.includes(c)).join('');
+  return [...Array(alphabetChars.length).keys()]
+    .filter(i => i % 5 == 0)
+    .map(i => alphabetChars.slice(i, i + 5))
+    .join(' ');
+};
+
+/** @type {(quote: EncryptedQuote) => EncryptedQuote} */
+export const toPatristocratCipher = (quote) => ({
+  ...quote,
+  plaintext: patristify(quote.plaintext),
+  ciphertext: patristify(quote.ciphertext),
+  hint: splitQuote(quote.plaintext)[0]
+});
 
 /** @type {(text: string) => string[]} */
 export const splitQuote = (text) => [...text.split(/\s+/g)];
