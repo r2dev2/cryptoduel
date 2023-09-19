@@ -35,7 +35,7 @@
    * to support nested <Panel />.
    *
    * This is needed because if .expanded is set for a parent panel,
-   * .expanded .panel-content will match panel content of all subpanels.
+   * `.expanded .panel-content` will match panel content of all subpanels.
    */
 
   .panel {

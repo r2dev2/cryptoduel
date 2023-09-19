@@ -91,7 +91,12 @@ button {
 	color: #505152;
 }
 
-button:hover, button.swal2-styled:hover, .moe-component:not(:disabled):hover {
+button:disabled {
+	color: #ccc;
+  cursor: auto !important;
+}
+
+button:not(:disabled):hover, .moe-component:not(:disabled):hover {
 	box-shadow: var(--elevation-1);
 	filter: brightness(90%);
 }

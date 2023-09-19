@@ -5,6 +5,7 @@
   import CryptogramSolver from './CryptogramSolver.svelte';
   import JoinLink from './JoinLink.svelte';
   import Checkbox from './Checkbox.svelte';
+  import ClearButton from './ClearButton.svelte';
   import Lobby from './Lobby.svelte';
   import Panel from './Panel.svelte';
 
@@ -90,6 +91,9 @@
           on:solved={() => solved.set(true)}
           on:error
         />
+        <Panel title="Advanced">
+          <ClearButton />
+        </Panel>
       {/if}
       {#if isHivemindBrain}
         <button on:click={newProblem}>New Problem</button>

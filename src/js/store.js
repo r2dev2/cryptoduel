@@ -32,9 +32,11 @@ export const hintEnabled = lswritable('hint', false);
 export const hivemindConnection = writable(
   /** @type {Connection | null} */ (null)
 );
+export const replacement = writable(Array(26).fill(''));
 export const progress = writable([null, [true]][0]);
 export const solved = writable(false);
 export const isFirstLaunch = lswritable(firstlaunch, true);
+export const dismissClearWarning = lswritable('dismiss-clear', false);
 export const needsKeyboardEntry = writable(false);
 export const focussedKey = writable(/** @type {string | null} */ (null));
 

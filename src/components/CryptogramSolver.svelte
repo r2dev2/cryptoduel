@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { alphabet, splitQuote } from '@/js/quotes.js';
+  import { replacement } from '@/js/store.js';
   import { log } from '@/js/utils.js';
 
   import Word from './Word.svelte';
@@ -13,14 +14,12 @@
 
   const dispatch = createEventDispatcher();
 
-  let replacement = Array(26).fill('');
-
   /** @type {(replacement: { from: string, to: string }) => void} */
   const replace = ({ from, to }) => {
     if ((to.length !== 1 || !/[a-zA-Z]/.test(to)) && to !== 'BACKSPACE') return;
-    const newReplacement = [...replacement];
+    const newReplacement = [...$replacement];
     newReplacement[alphabet.indexOf(from)] = to === 'BACKSPACE' ? '' : to;
-    replacement = newReplacement;
+    $replacement = newReplacement;
   };
 
   /** @type {(replacement: string[], problem: EncryptedQuote | null) => boolean} */
@@ -42,18 +41,18 @@
   /** @type {(e: CustomEvent<any>) => void} */
   const handleReplace = (e) => replace(e.detail);
 
-  $: problem, (replacement = Array(26).fill(''));
+  $: problem, ($replacement = Array(26).fill(''));
 
   $: words = splitQuote(problem?.ciphertext ?? '');
-  $: solved = isCorrect(replacement, problem);
+  $: solved = isCorrect($replacement, problem);
   $: if (solved) {
     dispatch('solved');
   }
   $: dispatch('progress', {
-    progress: getProgress(replacement, problem?.ciphertext ?? ''),
+    progress: getProgress($replacement, problem?.ciphertext ?? ''),
   });
 
-  $: log('problem:', problem, 'replacement', replacement);
+  $: log({ problem, $replacement });
 </script>
 
 {#if problem}
@@ -65,7 +64,7 @@
     {#each words as word}
       <Word
         {word}
-        {replacement}
+        replacement={$replacement}
         disabled={solved}
         on:replace={handleReplace}
         on:error
@@ -73,7 +72,7 @@
     {/each}
   </div>
   <ReplacementTable
-    {replacement}
+    replacement={$replacement}
     quote={problem.ciphertext}
     disabled={solved}
     on:replace={handleReplace}
