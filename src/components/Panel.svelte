@@ -28,6 +28,16 @@
 </div>
 
 <style>
+  /**
+   * IMPORTANT!!!!!
+   *
+   * In this style section, we use explicit > instead of all child selector
+   * to support nested <Panel />.
+   *
+   * This is needed because if .expanded is set for a parent panel,
+   * .expanded .panel-content will match panel content of all subpanels.
+   */
+
   .panel {
     --one-bounce-spring: cubic-bezier(0.31, 0.65, 0.36, 1.18);
     --expansion-transition-duration: 300ms;
@@ -79,7 +89,7 @@
     transition: var(--expansion-transition);
   }
 
-  .expanded .dropdown-arrow {
+  .expanded > * > .dropdown-arrow {
     transform: translateX(50%) rotate(90deg);
   }
 
@@ -99,11 +109,11 @@
     transition: var(--main-props-transition), transform 0ms ease-out;
   }
 
-  .dense .panel-content {
+  .dense > .panel-content {
     gap: 0;
   }
 
-  .expanded .panel-content {
+  .expanded > .panel-content {
     height: unset;
     padding: 0.75rem 0.75rem;
     transform: scaleY(1);
