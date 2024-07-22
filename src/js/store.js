@@ -14,6 +14,9 @@ const defaultUsers = [
   },
 ].slice(1);
 
+export const hivemindBrain = writable(new URLSearchParams(location.search).get('game'));
+export const isHivemindBrain = derived(hivemindBrain, $brainid => $brainid === null);
+
 /** @typedef {typeof defaultUsers[0]} User */
 /** @typedef {import('peerjs').DataConnection} Connection */
 

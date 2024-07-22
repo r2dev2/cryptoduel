@@ -4,6 +4,8 @@ import {
   connections,
   gameProblem,
   id,
+  hivemindBrain,
+  isHivemindBrain,
   hivemindConnection,
   name,
   self,
@@ -13,8 +15,6 @@ import {
 } from './store.js';
 import {
   external,
-  hivemindBrain,
-  isHivemindBrain,
   Messages,
 } from './constants.js';
 import { log } from './utils.js';
@@ -72,7 +72,7 @@ const onNewProblem = (_, data) => {
 
 /** @type {DataResponder<UPDATE_S_MSG>} */
 const updateFromClient = (id, data) => {
-  if (!isHivemindBrain) return;
+  if (!get(isHivemindBrain)) return;
   users.update(($users) =>
     $users.map((u) =>
       u.id !== id
@@ -89,7 +89,7 @@ const updateFromClient = (id, data) => {
 
 /** @type {DataResponder<UPDATE_C_MSG>} */
 const updateFromServer = (_, data) => {
-  if (isHivemindBrain) return;
+  if (get(isHivemindBrain)) return;
   const ourId = get(id);
   users.set(data.users.filter((u) => u.id !== ourId));
 };
@@ -116,7 +116,7 @@ const sendInitialState = (/** @type {Connection} */ conn) =>
 const openConnection = (/** @type {Connection} */ conn) =>
   new Promise((res) => {
     conn.on('open', () => {
-      if (conn.peer === hivemindBrain) hivemindConnection.set(conn);
+      if (conn.peer === get(hivemindBrain)) hivemindConnection.set(conn);
       connections.set(conn.peer, conn);
       conn.on('data', onData(conn.peer));
       conn.on('close', removePlayer(conn.peer));
@@ -142,9 +142,11 @@ export const connectTo = (otherId) =>
   });
 
 peer.on('open', (/** @type {string} */ $id) => {
+  const $isbrain = get(isHivemindBrain);
+  const $brainid = get(hivemindBrain);
   id.set($id);
-  if (!isHivemindBrain && hivemindBrain !== null) {
-    connectTo(hivemindBrain);
+  if (!$isbrain && $brainid !== null) {
+    connectTo($brainid);
   }
 });
 peer.on('connection', openConnection);
@@ -159,7 +161,7 @@ peer.on('error', (/** @type {any} */ e) => {
 
 const subscriptions = [
   users.subscribe(($users) => {
-    if (isHivemindBrain)
+    if (get(isHivemindBrain))
       emit({
         type: Messages.UPDATE_CLIENT_STATE,
         users: [...$users.map((u) => ({ ...u, conn: null })), get(self)],
@@ -167,7 +169,7 @@ const subscriptions = [
   }),
   self.subscribe(($self) => {
     log('own state changed', $self);
-    if (isHivemindBrain)
+    if (get(isHivemindBrain))
       emit({
         type: Messages.UPDATE_CLIENT_STATE,
         users: [...get(users).map((u) => ({ ...u, conn: null })), $self],
@@ -186,7 +188,7 @@ const subscriptions = [
     progress.set(null);
     solved.set(false);
 
-    if (isHivemindBrain) {
+    if (get(isHivemindBrain)) {
       users.update((us) =>
         us.map((u) => ({ ...u, progress: null, solved: false }))
       );

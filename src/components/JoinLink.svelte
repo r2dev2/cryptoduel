@@ -1,8 +1,9 @@
 <script>
-  import { id as id_ } from '@/js/store.js';
+  import { id as id_, isHivemindBrain as isHivemindBrain_ } from '@/js/store.js';
   import { getJoinLink } from '@/js/cryptoduelutils.js';
 
   export let id = id_;
+  export let isHivemindBrain = isHivemindBrain_;
 
   let clicked = false;
   // whether we can use the navigator.share api
@@ -22,7 +23,7 @@
     clicked = true;
   };
 
-  $: joinLink = getJoinLink($id);
+  $: joinLink = getJoinLink($id, $isHivemindBrain);
 </script>
 
 <div class="join-links">

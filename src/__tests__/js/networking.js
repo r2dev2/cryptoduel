@@ -101,10 +101,10 @@ describe('networking as a node', () => {
 
     jest.doMock('@/js/constants.js', () => ({
       ...Constants,
-      hivemindBrain: testId2,
-      isHivemindBrain: false,
       external: { Peer },
     }));
+
+    stores.hivemindBrain.set(testId2);
 
     networking = getNetworking();
     givePeerConnectionId(testId1);
@@ -206,10 +206,10 @@ describe('networking as a hivemind', () => {
 
     jest.doMock('@/js/constants.js', () => ({
       ...Constants,
-      hivemindBrain: null,
-      isHivemindBrain: true,
       external: { Peer },
     }));
+
+    stores.hivemindBrain.set(null);
 
     networking = getNetworking();
     givePeerConnectionId(testId2);

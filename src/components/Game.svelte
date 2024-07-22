@@ -13,7 +13,6 @@
     toAristocratCipher,
     toPatristocratCipher,
   } from '@/js/quotes.js';
-  import { isHivemindBrain, hivemindBrain } from '@/js/constants.js';
   import {
     hintEnabled,
     patristocratEnabled,
@@ -21,6 +20,8 @@
     gameProblem,
     solved,
     users,
+    isHivemindBrain,
+    hivemindBrain,
     hivemindConnection,
   } from '@/js/store.js';
 
@@ -38,7 +39,7 @@
     getNewQuote().then((quote) => gameProblem.set(createProblem(quote)));
   };
 
-  $: connectingToHivemind = !isHivemindBrain && $hivemindConnection === null;
+  $: connectingToHivemind = !$isHivemindBrain && $hivemindConnection === null;
 </script>
 
 <div class="game">
@@ -69,7 +70,7 @@
   </Panel>
   {#if connectingToHivemind}
     <Panel title="Connecting...">
-      Connecting to {hivemindBrain ?? ''}
+      Connecting to {$hivemindBrain ?? ''}
     </Panel>
   {:else if $users.length > 0}
     <Panel title="Lobby">
@@ -81,7 +82,7 @@
       <OpponentProgress />
     </Panel>
   {/if}
-  {#if $gameProblem || isHivemindBrain}
+  {#if $gameProblem || $isHivemindBrain}
     <Panel title="Game">
       {#if $gameProblem}
         <CryptogramSolver
@@ -91,7 +92,7 @@
           on:error
         />
       {/if}
-      {#if isHivemindBrain}
+      {#if $isHivemindBrain}
         <button on:click={newProblem}>New Problem</button>
       {/if}
     </Panel>
