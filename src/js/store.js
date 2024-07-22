@@ -64,7 +64,7 @@ export const timeTakenByOpponents = derived(
       $users.map((u) => [
         u.id,
         u.solved
-          ? get(timeTakenByOpponents).get(u.id) ?? Date.now() - $problemStart
+          ? get(timeTakenByOpponents)?.get(u.id) ?? Date.now() - $problemStart
           : Date.now() - $problemStart,
       ])
     );
