@@ -289,5 +289,23 @@ describe('networking as a hivemind', () => {
         lastUpdate.msg.users.every((u) => u.progress === null && !u.solved)
       ).toBe(true);
     });
+
+    it('sends the game problem if it exists', () => {
+      stores.gameProblem.set(testProblem);
+
+      // clear messages
+      messagesTo.splice(0, messagesTo.length);
+
+      // have person connect
+      networking.onData(testId1)({
+        type: Messages.INIT_STATE,
+        name: testName,
+      });
+
+      expect(messagesTo.map(m => m.msg)).toContainEqual({
+        type: Messages.NEW_PROBLEM,
+        problem: testProblem
+      });
+    })
   });
 });

@@ -57,6 +57,12 @@ const initializeRemotePlayer = (id, data) => {
       solved: false,
     },
   ]);
+  const $problem = get(gameProblem);
+  if (!connections.has(id) || $problem === null) return;
+  connections.get(id)?.send({
+    type: Messages.NEW_PROBLEM,
+    problem: $problem
+  });
 };
 
 /** @type {DataResponder<NEW_PROB_MSG>} */
