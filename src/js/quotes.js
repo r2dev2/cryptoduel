@@ -11,7 +11,7 @@ export const getQuoteGenerator = () => {
   let quoteIndex = 0;
 
   const chunk = fetch(
-    `./quotes/${Math.floor(Math.random() * (amountChunks))}.json`
+    `./quotes/${Math.floor(Math.random() * amountChunks)}.json`
   )
     .then((r) => r.json())
     .then(shuffleArray);

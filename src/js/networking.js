@@ -13,10 +13,7 @@ import {
   solved,
   users,
 } from './store.js';
-import {
-  external,
-  Messages,
-} from './constants.js';
+import { external, Messages } from './constants.js';
 import { log } from './utils.js';
 
 export const peer = new external.Peer();
@@ -61,7 +58,7 @@ const initializeRemotePlayer = (id, data) => {
   if (!connections.has(id) || $problem === null) return;
   connections.get(id)?.send({
     type: Messages.NEW_PROBLEM,
-    problem: $problem
+    problem: $problem,
   });
 };
 

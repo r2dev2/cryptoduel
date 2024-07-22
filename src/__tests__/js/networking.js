@@ -302,10 +302,10 @@ describe('networking as a hivemind', () => {
         name: testName,
       });
 
-      expect(messagesTo.map(m => m.msg)).toContainEqual({
+      expect(messagesTo.map((m) => m.msg)).toContainEqual({
         type: Messages.NEW_PROBLEM,
-        problem: testProblem
+        problem: testProblem,
       });
-    })
+    });
   });
 });

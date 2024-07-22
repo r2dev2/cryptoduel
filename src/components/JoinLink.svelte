@@ -1,5 +1,8 @@
 <script>
-  import { id as id_, isHivemindBrain as isHivemindBrain_ } from '@/js/store.js';
+  import {
+    id as id_,
+    isHivemindBrain as isHivemindBrain_,
+  } from '@/js/store.js';
   import { getJoinLink } from '@/js/cryptoduelutils.js';
 
   export let id = id_;
